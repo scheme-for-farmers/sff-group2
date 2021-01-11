@@ -36,4 +36,8 @@ public class CropRepositoryImpl implements CropRepository {
 				return null;
 			}
 	}
+	@Transactional
+	public Crop findCropById(long cropId) {
+		return em.find(Crop.class,cropId);
+	}
 }

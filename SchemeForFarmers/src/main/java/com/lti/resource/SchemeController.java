@@ -149,4 +149,10 @@ public class SchemeController {
 	public String sellCropToBidder(@PathVariable ("bId") long bidId) {
 		return adminService.sellCropToBidder(bidId);
 	}
+	
+	@RequestMapping(value="/findCropById/{cId}",method=RequestMethod.GET)
+	public Crop findCropById(@PathVariable("cId") long cropId)
+	{
+		return cropService.findCropById(cropId);
+	}
 }
