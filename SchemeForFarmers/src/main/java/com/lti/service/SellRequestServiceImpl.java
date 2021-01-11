@@ -22,6 +22,8 @@ public class SellRequestServiceImpl implements SellRequestService {
 	CropRepository cropRepository;
 	@Autowired
 	BidRepository bidRepository;
+	@Autowired
+	EmailService emailService;
 	public long placeSellRequest(SellRequestDto sellRequestDto)
 	{
 		try {
@@ -34,7 +36,19 @@ public class SellRequestServiceImpl implements SellRequestService {
 			sellRequest.setCrop(crop);
 			sellRequest.setQuantity(sellRequestDto.getQuantity());
 			SellRequest newsellRequest = sellRequestRepository.addOrUpdateSellRequest(sellRequest);
-			return newsellRequest.getRequestId();
+			if (newsellRequest != null) {
+				if(newsellRequest.getRequestId()>0)
+				{
+					String subject = "Registeration successful";
+		            String email =newsellRequest.getFarmer().getFarmerEmail();
+		            String text = "Hi " + newsellRequest.getFarmer().getFarmerName()+ "!! Your sellRequest is placed for " 
+		            + newsellRequest.getCrop().getCropName()+"!!. And your request id is "+newsellRequest.getRequestId()+" waiting for approval";
+		            emailService.sendEmailForNewRegistration(email, text, subject);
+		            System.out.println("Email sent successfully");
+				} 
+				 return newsellRequest.getRequestId();
+			}
+			return 0;
 		} catch (Exception e) {
 			return 0;
 		}

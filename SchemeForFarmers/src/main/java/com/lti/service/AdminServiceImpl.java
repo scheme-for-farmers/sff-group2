@@ -33,6 +33,8 @@ public class AdminServiceImpl implements AdminService {
 	SellRequestRepository sellRequestRepository;
 	@Autowired
 	BidRepository bidRepository;
+	@Autowired
+	EmailService emailService;
 
 	public long addOrUpdateAdmin(Admin admin) {
 		return adminRepository.addOrUpdateAdmin(admin);
@@ -50,6 +52,15 @@ public class AdminServiceImpl implements AdminService {
 	public long approveSellRequest(long requestId) {
 		SellRequest sellRequest = sellRequestRepository.updateSellRequestByRequestId(requestId);
 		if (sellRequest != null) {
+			if(sellRequest.getRequestId()>0)
+			{
+				String subject = "SellRequest Approved";
+	            String email =sellRequest.getFarmer().getFarmerEmail();
+	            String text = "Hi " + sellRequest.getFarmer().getFarmerName()+ "!! Your sellRequest for " 
+	            + sellRequest.getCrop().getCropName()+" is approved ";
+	            emailService.sendEmailForNewRegistration(email, text, subject);
+	            System.out.println("Email sent successfully");
+			} 
 			return sellRequest.getRequestId();
 		} else
 			return 0;
@@ -73,7 +84,18 @@ public class AdminServiceImpl implements AdminService {
 	public long rejectSellRequestApproval(long requestId) {
 		SellRequest sellRequest = sellRequestRepository.removeSellRequestByRequestId(requestId);
 		if (sellRequest != null)
+		{
+			if(sellRequest.getRequestId()>0)
+			{
+				String subject = "Oops:-( SellRequest Rejected ";
+	            String email =sellRequest.getFarmer().getFarmerEmail();
+	            String text = "Hi " + sellRequest.getFarmer().getFarmerName()+ "!! Your sellRequest for " 
+	            + sellRequest.getCrop().getCropName()+" is rejected ";
+	            emailService.sendEmailForNewRegistration(email, text, subject);
+	            System.out.println("Email sent successfully");
+			} 
 			return sellRequest.getRequestId();
+		}
 		return 0;
 	}
 
@@ -103,7 +125,26 @@ public class AdminServiceImpl implements AdminService {
 		sellRequest.setSoldDate(LocalDate.now());
 		SellRequest newSellRequest = sellRequestRepository.addOrUpdateSellRequest(sellRequest);
 		if (newSellRequest != null)
+		{
+			String subject = "Congragulations!!";
+            String email =newSellRequest.getBid().getBidder().getBidderEmail();
+            String text = "Hi " +newSellRequest.getBid().getBidder().getBidderName() + "!! Your bidRequest for the " 
+            + newSellRequest.getCrop().getCropName()+" is accepted. Rs. "+newSellRequest.getBid().getBidAmount()*newSellRequest.getQuantity()
+            +" will be debited from your registered bank account";
+            emailService.sendEmailForNewRegistration(email, text, subject);
+            System.out.println("Bidder Email sent successfully");
+            //for farmer
+            String farmersubject = "Congragulations!!";
+            String farmeremail =newSellRequest.getFarmer().getFarmerEmail();
+            String farmertext = "Hi " +newSellRequest.getFarmer().getFarmerName() + "!! Your sellRequest for the " 
+            + newSellRequest.getCrop().getCropName()+" is sold. Rs. "+newSellRequest.getBid().getBidAmount()*newSellRequest.getQuantity()
+            +" will be credited to your registered bank account";
+            emailService.sendEmailForNewRegistration(farmeremail, farmertext, farmersubject);
+            System.out.println("Farmer Email sent successfully");
+            
 			return "Sold";
+		}
+			
 		else
 			return "unsold";
 	}
@@ -126,6 +167,15 @@ public class AdminServiceImpl implements AdminService {
 	public long approveBid(long bidId) {
 		Bid bid = bidRepository.updateBidBybidId(bidId);
 		if (bid != null) {
+			if(bid.getBidId()>0)
+			{
+				String subject = "BidRequest approved!! ";
+	            String email =bid.getBidder().getBidderEmail();
+	            String text = "Hi " + bid.getBidder().getBidderName()+ "!! Your bidRequest for " 
+	            + bid.getCrop().getCropName()+" is approved ";
+	            emailService.sendEmailForNewRegistration(email, text, subject);
+	            System.out.println("Email sent successfully");
+			} 
 			return bid.getBidId();
 		} else
 			return 0;
