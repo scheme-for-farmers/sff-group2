@@ -17,7 +17,7 @@ public class BidderBank {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_bidderBank")
 	long bidderBankId;
 	long accNo;
-	String IFSC_code;
+	String ifscCode;
 	
 	@OneToOne
 	@JoinColumn(name="bidderId")
@@ -31,14 +31,16 @@ public class BidderBank {
 		this.accNo = accNo;
 	}
 
-	public String getIFSC_code() {
-		return IFSC_code;
+	
+	public String getIfscCode() {
+		return ifscCode;
 	}
 
-	public void setIFSC_code(String iFSC_code) {
-		IFSC_code = iFSC_code;
+	public void setIfscCode(String ifscCode) {
+		this.ifscCode = ifscCode;
 	}
-	@JsonIgnore
+
+	//@JsonIgnore
 	public Bidder getBidder() {
 		return bidder;
 	}

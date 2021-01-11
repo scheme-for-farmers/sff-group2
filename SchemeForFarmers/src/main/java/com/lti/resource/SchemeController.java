@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.dto.DisplayRequestDto;
+import com.lti.dto.DocumentDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
@@ -50,7 +52,7 @@ public class SchemeController {
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long registerFarmer(@RequestBody Farmer farmer) {
-		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
+		System.out.println("hello" + farmer.getFarmerBank().getIfscCode()+" ");
 		return farmerService.registerFarmer(farmer);
 	}
 
@@ -211,5 +213,11 @@ public class SchemeController {
 					return "invalid user";
 			}
 		}
+	}
+	
+	@RequestMapping(value="/uploadDoc",method=RequestMethod.POST,consumes="multipart/form-data")
+	public long uploadDocument(@RequestBody DocumentDto documentDto)
+	{
+		return farmerService.uploadDocument(documentDto);
 	}
 }

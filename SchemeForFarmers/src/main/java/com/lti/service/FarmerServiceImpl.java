@@ -1,11 +1,15 @@
 package com.lti.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
+import com.lti.dto.DocumentDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SoldHistoryDto;
 import com.lti.entity.Crop;
@@ -116,4 +120,22 @@ public class FarmerServiceImpl implements FarmerService {
 		else
 			return null;
 	}
+	
+	
+	public long uploadDocument(DocumentDto documentDto) {
+		String farmerMail=documentDto.getMail();
+		Farmer farmer=farmerRepository.fetchFarmerByEmail(farmerMail);
+		String imgUploadLocation = "f:/uploads/";
+		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
+		String newFileName = farmer.getFarmerId() + "-" + uploadedFileName;
+		String targetFileName = imgUploadLocation + newFileName;
+		try {
+			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
+			farmer.setFarmerPan(newFileName);
+			return farmerRepository.addOrUpdateFarmer(farmer).getFarmerId();
+		} catch(IOException e) {
+			return 0;
+		}
+	}
+	
 }
