@@ -7,11 +7,19 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lti.entity.Bid;
+
 @Repository
 public class BidRepositoryImpl implements BidRepository {
 	@PersistenceContext
 	EntityManager em;
 
+	@Transactional
+	public Bid addOrUpdateBid(Bid bid) {
+		//Bid b=em.merge(bid);
+		return em.merge(bid); 
+	}
+	
 	@Transactional
 	public double findMaximumBidAmount(long cropId) {
 		try {
@@ -31,5 +39,23 @@ public class BidRepositoryImpl implements BidRepository {
 		Query query = em.createQuery(jpql);
 		query.setParameter("cId", cropId);
 		return query.getResultList();
+	}
+	
+	public List<Bid> fetchAllBidsByApproveYes() {
+		try {
+			String jpql = "select b from Bid b where b.bidApprove='yes'";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	@Transactional
+	public Bid fetchBidByBidId(long bidId) {
+		String jpql = "select b from Bid b where b.bidId=:bId";
+		Query query = em.createQuery(jpql);
+		query.setParameter("bId", bidId);
+		Bid bid=(Bid)query.getSingleResult();
+		return bid;
 	}
 }

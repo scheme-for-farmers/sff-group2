@@ -32,4 +32,16 @@ public class BidderRepositoryImpl implements BidderRepository {
 			return null;
 		}
 	}
+	@Transactional
+	public Bidder fetchBidderByEmail(String bidderEmail) {
+		try {
+			String jpql = "select b from Bidder b where bidderEmail=:bEmail";
+			Query query = em.createQuery(jpql);
+			query.setParameter("bEmail", bidderEmail);
+			Bidder bidders = (Bidder) query.getSingleResult();
+			return bidders;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

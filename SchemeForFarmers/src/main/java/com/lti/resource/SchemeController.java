@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.dto.ApprovalSellRequestDto;
+import com.lti.dto.DisplayBidDto;
+import com.lti.dto.DisplayRequestDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SoldHistoryDto;
 import com.lti.entity.Bidder;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.service.AdminService;
+import com.lti.service.BidService;
 import com.lti.service.BidderService;
 import com.lti.service.CropService;
 import com.lti.service.FarmerService;
@@ -34,6 +37,8 @@ public class SchemeController {
 	AdminService adminService;
 	@Autowired
 	CropService cropService;
+	@Autowired
+	BidService bidService;
 	
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long registerFarmer(@RequestBody Farmer farmer) {
@@ -125,5 +130,23 @@ public class SchemeController {
 	public long rejectSellRequestApproval(@PathVariable ("rId") long requestId)
 	{
 		return adminService.rejectSellRequestApproval(requestId);
+	}
+	@RequestMapping(value="/displaySellRequest",method=RequestMethod.GET)
+	public List<DisplayRequestDto> displaySellRequest(){
+		return bidService.fetchApprovedSellRequest();
+	}
+	@RequestMapping(value="/placeBid",method=RequestMethod.GET)
+	public long PlaceBidRequest(@RequestBody DisplayRequestDto displayRequestDto)
+	{
+		return bidService.placeBid(displayRequestDto);
+	}
+	@RequestMapping(value="/displayBids",method=RequestMethod.GET)
+	public List<DisplayBidDto> viewAllBids(){
+		return adminService.viewBid();
+	}
+	
+	@RequestMapping(value="/sellCrop/{bId}",method=RequestMethod.GET)
+	public String sellCropToBidder(@PathVariable ("bId") long bidId) {
+		return adminService.sellCropToBidder(bidId);
 	}
 }

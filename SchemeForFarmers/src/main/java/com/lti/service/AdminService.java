@@ -3,6 +3,7 @@ package com.lti.service;
 import java.util.List;
 
 import com.lti.dto.ApprovalSellRequestDto;
+import com.lti.dto.DisplayBidDto;
 import com.lti.entity.Admin;
 
 public interface AdminService {
@@ -11,4 +12,6 @@ public interface AdminService {
 	public List<ApprovalSellRequestDto> fetchApprovalPendingSellRequest();
 	public long approveSellRequest(long requestId);
 	public long rejectSellRequestApproval(long requestId);
+	public List<DisplayBidDto> viewBid();
+	public String sellCropToBidder(long bidId);
 }

@@ -69,4 +69,23 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 		query.executeUpdate();
 		return sellRequest;
 	}
+	@Transactional
+	public List<SellRequest> fetchApprovedSellRequest() {
+		try {
+			String jpql = "select s from SellRequest s where s.approve='yes'";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	@Transactional
+	public SellRequest addOrUpdateSellRequest(SellRequest sellRequest) {
+		try {
+			SellRequest s=em.merge(sellRequest);
+			return s;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

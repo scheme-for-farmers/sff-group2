@@ -10,4 +10,6 @@ public interface SellRequestRepository {
 	public SellRequest updateSellRequestByRequestId(long requestId);
 	public SellRequest removeSellRequestByRequestId(long requestId);
 	public SellRequest fetchSellRequestByRequestId(long requestId);
+	public List<SellRequest> fetchApprovedSellRequest();
+	public SellRequest addOrUpdateSellRequest(SellRequest sellRequest);
 }
