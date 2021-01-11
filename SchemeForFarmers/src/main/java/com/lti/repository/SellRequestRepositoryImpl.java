@@ -39,7 +39,7 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 	
 	public SellRequest fetchSellRequestByRequestId(long requestId) {
 		
-		String jpql = "select s from SellRequest s where s.requestId=:rid";
+		String jpql = "select s from SellRequest s where s.requestId=:rid and approve='yes'";
 		Query query = em.createQuery(jpql);
 		query.setParameter("rid", requestId);
 		SellRequest sellRequest=(SellRequest)query.getSingleResult();

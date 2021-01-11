@@ -28,14 +28,18 @@ public class SellRequestServiceImpl implements SellRequestService {
 	{
 		try {
 			SellRequest sellRequest = new SellRequest();
-			Farmer farmer=farmerRepository.fetchFarmerByEmail(sellRequestDto.getFarmerEmail());
+			SellRequest newsellRequest = new SellRequest();
+			Farmer farmer=farmerRepository.fetchFarmerByEmailWithApproveYes(sellRequestDto.getFarmerEmail());
+			System.out.println("farmer: "+ farmer.getFarmerEmail());
 			Crop crop=cropRepository.findCropByCropNameAndCropType(sellRequestDto.getCropName(), sellRequestDto.getCropType());
-			sellRequest.setApprove("no");
-			sellRequest.setStatus("unsold");
-			sellRequest.setFarmer(farmer);
-			sellRequest.setCrop(crop);
-			sellRequest.setQuantity(sellRequestDto.getQuantity());
-			SellRequest newsellRequest = sellRequestRepository.addOrUpdateSellRequest(sellRequest);
+			if(crop!=null && farmer!=null) {
+				sellRequest.setApprove("no");
+				sellRequest.setStatus("unsold");
+				sellRequest.setFarmer(farmer);
+				sellRequest.setCrop(crop);
+				sellRequest.setQuantity(sellRequestDto.getQuantity());
+				newsellRequest = sellRequestRepository.addOrUpdateSellRequest(sellRequest);
+			}
 			if (newsellRequest != null) {
 				if(newsellRequest.getRequestId()>0)
 				{

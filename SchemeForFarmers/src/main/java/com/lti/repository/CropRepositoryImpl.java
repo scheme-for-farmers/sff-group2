@@ -3,10 +3,12 @@ package com.lti.repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.lti.entity.Crop;
+import com.lti.entity.Farmer;
 
 @Repository
 public class CropRepositoryImpl implements CropRepository {
@@ -38,6 +40,24 @@ public class CropRepositoryImpl implements CropRepository {
 	}
 	@Transactional
 	public Crop findCropById(long cropId) {
-		return em.find(Crop.class,cropId);
+		try {
+			return em.find(Crop.class,cropId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	@Transactional
+	public long deleteCrop(long cropId) {
+		try {
+			long id=0;
+			Crop newcrop = findCropById(cropId);
+			if(newcrop!=null)
+				id = newcrop.getCropId();
+			em.remove(newcrop);
+			return id;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }

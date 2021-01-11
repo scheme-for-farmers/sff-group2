@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.lti.entity.Bidder;
+import com.lti.entity.Farmer;
 import com.lti.repository.BidderRepository;
 
 @Service
@@ -13,21 +14,32 @@ public class BidderServiceImpl implements BidderService {
 	BidderRepository bidderRepository;
 	@Autowired
 	EmailService emailService;
-
+	
+	public boolean checkDuplicate(String bidderEmail) {
+		Bidder bidder = bidderRepository.fetchBidderByEmail(bidderEmail);
+		if (bidder == null)
+			return true;
+		return false;
+	}
+	
 	public long registerBidder(Bidder bidder) {
-		bidder.setBidderApprove("no".toLowerCase());
-		bidder.getBidderAddress().setBidder(bidder);
-		bidder.getBidderBank().setBidder(bidder);
-		Bidder newBidder = bidderRepository.addOrUpdateBidder(bidder);
-		if (newBidder != null) {
-			if(newBidder.getBidderId()>0)
-			{
-				String subject = "Registeration successful";
-	            String email =newBidder.getBidderEmail();
-	            String text = "Hi " + newBidder.getBidderName()+ "!! Your registeration Id is " + newBidder.getBidderId()+" waiting for approval";
-	            emailService.sendEmailForNewRegistration(email, text, subject);
-	            System.out.println("Email sent successfully");
-	            return newBidder.getBidderId();
+		boolean output = checkDuplicate(bidder.getBidderEmail());
+		if(output) {
+			bidder.setBidderApprove("no".toLowerCase());
+			bidder.getBidderAddress().setBidder(bidder);
+			bidder.getBidderBank().setBidder(bidder);
+			Bidder newBidder = bidderRepository.addOrUpdateBidder(bidder);
+			if (newBidder != null) {
+				if(newBidder.getBidderId()>0)
+				{
+					String subject = "Registeration successful";
+					String email =newBidder.getBidderEmail();
+					String text = "Hi " + newBidder.getBidderName()+
+					"!! Your registeration Id is " + newBidder.getBidderId()+" waiting for approval";
+					emailService.sendEmailForNewRegistration(email, text, subject);
+					System.out.println("Email sent successfully");
+					return newBidder.getBidderId();
+				}
 			}
 		}
 		return 0;

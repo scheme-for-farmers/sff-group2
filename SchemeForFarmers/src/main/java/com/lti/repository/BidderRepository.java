@@ -17,4 +17,5 @@ public interface BidderRepository {
 
 	public long rejectBidder(String bidderEmail);
 
+	public Bidder fetchBidderByEmailWithApproveYes(String bidderEmail);
 }

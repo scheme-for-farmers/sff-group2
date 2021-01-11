@@ -8,12 +8,9 @@ import com.lti.entity.Farmer;
 
 public interface FarmerService {
 	public String isValidUser(String farmerEmail, String farmerPassword);
-
 	public long registerFarmer(Farmer farmer);
-
 	public List<MarketPlaceDto> viewMarketPlace(String cropName, String cropType);
-
 	public List<SoldHistoryDto> viewSoldHistory(String farmerEmail);
-
+	public boolean checkDuplicate(String farmerEmail);
 	public String forgotPassword(String farmerEmail);
 }

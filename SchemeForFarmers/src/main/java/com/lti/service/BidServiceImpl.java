@@ -45,22 +45,20 @@ public class BidServiceImpl implements BidService {
 		return appSellReqDto;
 	}
 	public long placeBid(DisplayRequestDto displayRequestDto) {
-		System.out.println("hii");
 		try {
-			System.out.println(displayRequestDto.getCropName());
+			
+			Bidder bidder=bidderRepository.fetchBidderByEmailWithApproveYes(displayRequestDto.getEmail());
 			Crop crop=cropRepository.findCropByCropNameAndCropType(displayRequestDto.getCropName(),displayRequestDto.getCropType());
-			System.out.println(crop.getCropId());
 			double maxBidAmount=bidRepository.findMaximumBidAmount(crop.getCropId());
 			System.out.println(maxBidAmount);
-			if(displayRequestDto.getCurrentBidAmount()>maxBidAmount)
+			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestId(displayRequestDto.getRequestId());
+			if(displayRequestDto.getCurrentBidAmount()>maxBidAmount && bidder!=null && crop!=null && sellRequest!=null)
 			{
-				System.out.println("hello ");
 				Bid bid=new Bid();
 				bid.setBidAmount(displayRequestDto.getCurrentBidAmount());
 				bid.setBidDate(LocalDate.now());
 				bid.setBidApprove("no");
-				bid.setRequestId(displayRequestDto.getRequestId());
-				Bidder bidder=bidderRepository.fetchBidderByEmail(displayRequestDto.getEmail());
+				bid.setRequestId(displayRequestDto.getRequestId());	
 				bid.setBidder(bidder);
 				bid.setCrop(crop);
 				Bid newbid=bidRepository.addOrUpdateBid(bid);

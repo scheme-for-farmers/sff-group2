@@ -58,11 +58,6 @@ public class SchemeController {
 	public long registerBidder(@RequestBody Bidder bidder) {
 		return bidderService.registerBidder(bidder);
 	}
-
-	@RequestMapping(value = "/hello/{hello}", method = RequestMethod.GET)
-	public String sayHello(@PathVariable("hello") String s) {
-		return "Kaviya";
-	}
 	
 //	http://localhost:8080/isVaild/svraj24@gmail.com/selvaraj!23
 	
@@ -100,6 +95,11 @@ public class SchemeController {
 //		}
 		System.out.println(crop.getCropName());
 		return cropService.addOrUpdateCrop(crop);
+	}
+	
+	@RequestMapping(value = "/deleteCrop/{cId}", method = RequestMethod.GET)
+	public long deleteCrop(@PathVariable("cId") long cropId) {
+		return cropService.deleteCrop(cropId);
 	}
 
 	@RequestMapping(value = "/viewPendingApprovalFarmers", method = RequestMethod.GET)
@@ -212,6 +212,4 @@ public class SchemeController {
 			}
 		}
 	}
-	
-
 }
