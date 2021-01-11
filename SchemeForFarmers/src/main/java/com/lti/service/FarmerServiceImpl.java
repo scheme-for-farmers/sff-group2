@@ -28,6 +28,8 @@ public class FarmerServiceImpl implements FarmerService {
 	CropRepository cropRepository;
 	@Autowired
 	BidRepository bidRepository;
+	@Autowired
+	EmailService emailService;
 
 	public long registerFarmer(Farmer farmer) {
 		farmer.getFarmerAddress().setFarmer(farmer);
@@ -36,8 +38,19 @@ public class FarmerServiceImpl implements FarmerService {
 		farmer.setFarmerApprove("no");
 		Farmer newFarmer = farmerRepository.addOrUpdateFarmer(farmer);
 		if (newFarmer != null)
-			return newFarmer.getFarmerId(); // sending id
-		return 0; // else 0
+		{
+			if(newFarmer.getFarmerId()>0)
+			{
+				String subject = "Registeration successful";
+	            String email =newFarmer.getFarmerEmail();
+	            String text = "Hi " + newFarmer.getFarmerName()+ "!! Your registeration Id is " + newFarmer.getFarmerId()+" waiting for approval";
+	            emailService.sendEmailForNewRegistration(email, text, subject);
+	            System.out.println("Email sent successfully");
+	            return newFarmer.getFarmerId();
+			}
+		}
+			
+		return 0; 
 
 	}
 

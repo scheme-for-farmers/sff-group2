@@ -27,6 +27,8 @@ public class BidServiceImpl implements BidService {
 	BidderRepository bidderRepository;
 	@Autowired
 	SellRequestRepository sellRequestRepository;
+	@Autowired
+	EmailService emailService;
 	public List<DisplayRequestDto> fetchApprovedSellRequest() {
 		List<SellRequest> sellRequests = sellRequestRepository.fetchApprovedSellRequest(); 
 		List<DisplayRequestDto> appSellReqDto =new ArrayList<DisplayRequestDto>();
@@ -62,11 +64,20 @@ public class BidServiceImpl implements BidService {
 				bid.setBidder(bidder);
 				bid.setCrop(crop);
 				Bid newbid=bidRepository.addOrUpdateBid(bid);
-				return newbid.getBidId();
+				if (newbid != null) {
+					if(newbid.getRequestId()>0)
+					{
+						String subject = "Registeration successful";
+			            String email =newbid.getBidder().getBidderEmail();
+			            String text = "Hi " + newbid.getBidder().getBidderName()+ "!! Your bidRequest is placed for " 
+			            + newbid.getCrop().getCropName()+"!!. And your bid id is "+newbid.getBidId()+" waiting for approval";
+			            emailService.sendEmailForNewRegistration(email, text, subject);
+			            System.out.println("Email sent successfully");
+			            return newbid.getBidId();
+					}
+				}
 			}
-			else {
-				return 0;
-			}
+		return 0;
 		} catch (Exception e) {
 			return 0;
 		}
