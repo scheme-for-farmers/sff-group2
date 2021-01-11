@@ -28,7 +28,7 @@ public class FarmerServiceImpl implements FarmerService {
 	CropRepository cropRepository;
 	@Autowired
 	BidRepository bidRepository;
-	
+
 	public long registerFarmer(Farmer farmer) {
 		farmer.getFarmerAddress().setFarmer(farmer);
 		farmer.getFarmerBank().setFarmer(farmer);
@@ -51,10 +51,11 @@ public class FarmerServiceImpl implements FarmerService {
 		} else
 			return "invalid";
 	}
+
 	public List<MarketPlaceDto> viewMarketPlace(String cropName, String cropType) {
 		Crop crop = cropRepository.findCropByCropNameAndCropType(cropName, cropType);
 		List<MarketPlaceDto> marketplace = new ArrayList<MarketPlaceDto>();
-		if(crop!=null) {
+		if (crop != null) {
 			double currentBidAmount = bidRepository.findMaximumBidAmount(crop.getCropId());
 			List<Double> previousBids = bidRepository.previousBidsByCropId(crop.getCropId());
 			MarketPlaceDto mdto = new MarketPlaceDto();
@@ -65,11 +66,12 @@ public class FarmerServiceImpl implements FarmerService {
 		}
 		return marketplace;
 	}
+
 	public List<SoldHistoryDto> viewSoldHistory(String farmerEmail) {
 		List<SoldHistoryDto> soldHistory = new ArrayList<SoldHistoryDto>();
 		List<SellRequest> sellRequest = sellRequestRepository.soldDetails(farmerEmail);
-		if(sellRequest.size()!=0) {
-			for(SellRequest s : sellRequest) {
+		if (sellRequest.size() != 0) {
+			for (SellRequest s : sellRequest) {
 				SoldHistoryDto sold = new SoldHistoryDto();
 				sold.setBasePrice(s.getCrop().getBasePrice());
 				sold.setBidAmount(s.getBid().getBidAmount());
@@ -78,10 +80,18 @@ public class FarmerServiceImpl implements FarmerService {
 				sold.setCropType(s.getCrop().getCropType());
 				sold.setQuantity(s.getQuantity());
 				sold.setSoldDate(s.getBid().getBidDate());
-				sold.setTotalPrice(s.getBid().getBidAmount()*s.getQuantity());
+				sold.setTotalPrice(s.getBid().getBidAmount() * s.getQuantity());
 				soldHistory.add(sold);
 			}
 		}
 		return soldHistory;
+	}
+
+	public String forgotPassword(String farmerEmail) {
+		Farmer farmer = farmerRepository.fetchFarmerByEmail(farmerEmail);
+		if (farmer != null)
+			return farmer.getFarmerPassword();
+		else
+			return null;
 	}
 }
