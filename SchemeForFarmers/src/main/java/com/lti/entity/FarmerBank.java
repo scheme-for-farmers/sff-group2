@@ -19,7 +19,6 @@ public class FarmerBank {
 	
 	@OneToOne
 	@JoinColumn(name="farmerId")
-	@JsonIgnore
 	Farmer farmer;
 
 	public long getAccNo() {
@@ -37,7 +36,7 @@ public class FarmerBank {
 	public void setIFSC_code(String iFSC_code) {
 		IFSC_code = iFSC_code;
 	}
-
+	@JsonIgnore
 	public Farmer getFarmer() {
 		return farmer;
 	}

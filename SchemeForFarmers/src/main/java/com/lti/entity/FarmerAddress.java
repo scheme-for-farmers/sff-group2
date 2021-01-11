@@ -24,7 +24,6 @@ public class FarmerAddress {
 	
 	@OneToOne
 	@JoinColumn(name="farmerId")
-	@JsonIgnore
 	Farmer farmer;
 
 	public long getAddressId() {
@@ -74,7 +73,7 @@ public class FarmerAddress {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
-
+	@JsonIgnore
 	public Farmer getFarmer() {
 		return farmer;
 	}
