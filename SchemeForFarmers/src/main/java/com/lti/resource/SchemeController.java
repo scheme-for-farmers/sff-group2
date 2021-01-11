@@ -55,6 +55,7 @@ public class SchemeController {
 		return "Kaviya";
 	}
 	
+//	http://localhost:8080/isVaild/svraj24@gmail.com/selvaraj!23
 	@RequestMapping(value = "/isVaild/{email}/{password}", method = RequestMethod.GET) 
 	public int isValidUser(@PathVariable("email") String Email,@PathVariable("password") String Password)
 	{
