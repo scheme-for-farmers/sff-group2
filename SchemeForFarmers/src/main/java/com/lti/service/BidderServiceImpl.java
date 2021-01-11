@@ -11,6 +11,8 @@ import com.lti.repository.BidderRepository;
 public class BidderServiceImpl implements BidderService {
 	@Autowired
 	BidderRepository bidderRepository;
+	@Autowired
+	EmailService emailService;
 
 	public long registerBidder(Bidder bidder) {
 		bidder.setBidderApprove("no".toLowerCase());
@@ -18,7 +20,15 @@ public class BidderServiceImpl implements BidderService {
 		bidder.getBidderBank().setBidder(bidder);
 		Bidder newBidder = bidderRepository.addOrUpdateBidder(bidder);
 		if (newBidder != null) {
-			return newBidder.getBidderId();
+			if(newBidder.getBidderId()>0)
+			{
+				String subject = "Registeration successful";
+	            String email =newBidder.getBidderEmail();
+	            String text = "Hi " + newBidder.getBidderName()+ "!! Your registeration Id is " + newBidder.getBidderId()+" waiting for approval";
+	            emailService.sendEmailForNewRegistration(email, text, subject);
+	            System.out.println("Email sent successfully");
+	            return newBidder.getBidderId();
+			}
 		}
 		return 0;
 	}
