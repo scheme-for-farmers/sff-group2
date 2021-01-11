@@ -1,5 +1,7 @@
 package com.lti.repository;
 
+import java.util.List;
+
 import com.lti.entity.Crop;
 
 public interface CropRepository {
@@ -7,4 +9,5 @@ public interface CropRepository {
 	public Crop findCropByCropNameAndCropType(String cropName,String cropType);
 	public Crop findCropById(long cropId);
 	public long deleteCrop(long cropId);
+	public List<Crop> viewAllCrops();
 }

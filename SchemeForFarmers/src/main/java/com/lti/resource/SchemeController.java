@@ -97,6 +97,11 @@ public class SchemeController {
 		return cropService.addOrUpdateCrop(crop);
 	}
 	
+	@RequestMapping(value = "/viewAllCrops", method = RequestMethod.GET)
+	public List<Crop> viewAllCrops(){
+		return cropService.viewAllCrops();
+	}
+	
 	@RequestMapping(value = "/deleteCrop/{cId}", method = RequestMethod.GET)
 	public long deleteCrop(@PathVariable("cId") long cropId) {
 		return cropService.deleteCrop(cropId);

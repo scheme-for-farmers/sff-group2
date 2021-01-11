@@ -1,5 +1,7 @@
 package com.lti.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -58,6 +60,16 @@ public class CropRepositoryImpl implements CropRepository {
 			return id;
 		} catch (Exception e) {
 			return 0;
+		}
+	}
+	@Transactional
+	public List<Crop> viewAllCrops(){
+		try {
+			String jpql = "select c from Crop c";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }
