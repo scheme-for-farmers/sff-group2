@@ -214,4 +214,20 @@ public class SchemeController {
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
+	public long addAdmin(@RequestBody Admin admin) {
+//		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
+		return adminService.addOrUpdateAdmin(admin);
+	}
+
+	
+	
+	
+	
+	
 }
