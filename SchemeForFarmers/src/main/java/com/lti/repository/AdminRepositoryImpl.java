@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.entity.Admin;
+
 @Repository
 public class AdminRepositoryImpl implements AdminRepository {
 	@PersistenceContext
 	EntityManager em;
 
-	
 	@Override
 	@Transactional
 	public long addOrUpdateAdmin(Admin admin) {
@@ -33,6 +33,19 @@ public class AdminRepositoryImpl implements AdminRepository {
 			Query query = em.createQuery(jpql);
 			query.setParameter("aEmail", adminEmail);
 			query.setParameter("aPassword", adminPassword);
+			Admin admin = (Admin) query.getSingleResult();
+			return admin;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Transactional
+	public Admin fetchAdminByEmail(String adminEmail) {
+		try {
+			String jpql = "select a from Admin a where adminEmail=:aEmail";
+			Query query = em.createQuery(jpql);
+			query.setParameter("aEmail", adminEmail);
 			Admin admin = (Admin) query.getSingleResult();
 			return admin;
 		} catch (Exception e) {

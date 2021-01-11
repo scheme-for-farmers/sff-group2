@@ -58,4 +58,24 @@ public class BidRepositoryImpl implements BidRepository {
 		Bid bid=(Bid)query.getSingleResult();
 		return bid;
 	}
+	@Transactional
+	public Bid updateBidBybidId(long bidId) {
+		String jpql = "update Bid b set b.bidApprove='yes' where b.bidId=:bId";
+		Query query = em.createQuery(jpql);
+		query.setParameter("bId", bidId);
+		query.executeUpdate();
+		Bid bid = fetchBidByBidId(bidId);
+		return bid;
+	}
+	
+	@Transactional
+	public List<Bid> fetchBidsByBidApproveNo() {
+		try {
+			String jpql = "select b from Bid b where b.bidApprove='no'";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

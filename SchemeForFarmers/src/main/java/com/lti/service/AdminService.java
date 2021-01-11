@@ -2,9 +2,12 @@ package com.lti.service;
 
 import java.util.List;
 
+import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.entity.Admin;
+import com.lti.entity.Bidder;
+import com.lti.entity.Farmer;
 
 public interface AdminService {
 	public long addOrUpdateAdmin(Admin admin);
@@ -14,4 +17,13 @@ public interface AdminService {
 	public long rejectSellRequestApproval(long requestId);
 	public List<DisplayBidDto> viewBid();
 	public String sellCropToBidder(long bidId);
+	public List<ApprovalBidDto> fetchApprovalPendingBids();
+	public long approveBid(long bidId);
+	public List<Farmer> fetchApprovalPendingFarmers();
+    public long approveFarmer(String farmerEmail);
+    public List<Bidder> fetchApprovalPendingBidders();
+    public long approveBidder(String bidderEmail);
+    public long rejectFarmer(String farmerEmail);
+    public long rejectBidder(String bidderEmail);
+    public String forgotPassword(String adminEmail);
 }
