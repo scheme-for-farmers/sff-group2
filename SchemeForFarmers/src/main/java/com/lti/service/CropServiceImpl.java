@@ -1,5 +1,7 @@
 package com.lti.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,8 @@ public class CropServiceImpl implements CropService {
 	}
 	public long deleteCrop(long cropId) {
 		return cropRepository.deleteCrop(cropId);
+	}
+	public List<Crop> viewAllCrops(){
+		return cropRepository.viewAllCrops();
 	}
 }
