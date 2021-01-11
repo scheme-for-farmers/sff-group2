@@ -1,5 +1,7 @@
 package com.lti.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,15 +23,20 @@ public class SellRequest {
 	long requestId;
 	double quantity;
 	String approve;
+	String status;
+	LocalDate soldDate;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="cropId")
 	Crop crop;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="farmerId")
-	@JsonIgnore
 	Farmer farmer;
+	
+	@ManyToOne
+	@JoinColumn(name="bidId")
+	Bid bid;
 
 	public long getRequestId() {
 		return requestId;
@@ -70,4 +77,29 @@ public class SellRequest {
 	public void setFarmer(Farmer farmer) {
 		this.farmer = farmer;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	@JsonIgnore
+	public Bid getBid() {
+		return bid;
+	}
+
+	public void setBid(Bid bid) {
+		this.bid = bid;
+	}
+
+	public LocalDate getSoldDate() {
+		return soldDate;
+	}
+
+	public void setSoldDate(LocalDate soldDate) {
+		this.soldDate = soldDate;
+	}
+	
 }

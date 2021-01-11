@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Crop {
 	@Id
@@ -22,16 +24,19 @@ public class Crop {
 	String CropType;
 	double basePrice;
 	
-	@OneToOne(mappedBy="crop",cascade=CascadeType.ALL)
-	SellRequest sellRequest;
+	@OneToMany(mappedBy="crop",cascade=CascadeType.ALL)
+	List<SellRequest> sellRequest;
 	
 	@OneToMany(mappedBy="crop",cascade=CascadeType.ALL)
+	@JsonIgnore
 	List<Bid> bid;
 	
 	@OneToOne(mappedBy="crop",cascade=CascadeType.ALL)
+	@JsonIgnore
 	Insurance insurance;
 	
 	@OneToOne(mappedBy="crop",cascade=CascadeType.ALL)
+	@JsonIgnore
 	ApplyInsurance applyInsurance;
 
 	public long getCropId() {
@@ -65,12 +70,13 @@ public class Crop {
 	public void setBasePrice(double basePrice) {
 		this.basePrice = basePrice;
 	}
-
-	public SellRequest getSellRequest() {
+	
+	@JsonIgnore
+	public List<SellRequest> getSellRequest() {
 		return sellRequest;
 	}
 
-	public void setSellRequest(SellRequest sellRequest) {
+	public void setSellRequest(List<SellRequest> sellRequest) {
 		this.sellRequest = sellRequest;
 	}
 

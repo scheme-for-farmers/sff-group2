@@ -73,7 +73,7 @@ public class BidderAddress {
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
 	}
-
+	@JsonIgnore
 	public Bidder getBidder() {
 		return bidder;
 	}

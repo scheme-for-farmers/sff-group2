@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Farmer {
 	@Id
@@ -29,13 +31,13 @@ public class Farmer {
 	@OneToOne(mappedBy="farmer",cascade=CascadeType.ALL)
 	FarmerBank farmerBank;
 	
-	@OneToOne(mappedBy="farmer",cascade=CascadeType.ALL)
-	SellRequest sellRequest;
+	@OneToMany(mappedBy="farmer",cascade=CascadeType.ALL)
+	List<SellRequest> sellRequest;
 	
 	@OneToOne(mappedBy="farmer",cascade=CascadeType.ALL)
 	FarmerLand farmerLand;
 	
-	@OneToMany(mappedBy="farmer",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="farmer",cascade=CascadeType.ALL,fetch = FetchType.EAGER)
 	List<ApplyInsurance> applyInsurance;
 
 	public long getFarmerId() {
@@ -101,12 +103,13 @@ public class Farmer {
 	public void setFarmerBank(FarmerBank farmerBank) {
 		this.farmerBank = farmerBank;
 	}
-
-	public SellRequest getSellRequest() {
+	
+	@JsonIgnore
+	public List<SellRequest> getSellRequest() {
 		return sellRequest;
 	}
 
-	public void setSellRequest(SellRequest sellRequest) {
+	public void setSellRequest(List<SellRequest> sellRequest) {
 		this.sellRequest = sellRequest;
 	}
 

@@ -1,7 +1,9 @@
 package com.lti.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -23,15 +26,20 @@ public class Bid {
 	double bidAmount;
 	LocalDate bidDate;
 	String bidApprove;
-	String bidSold;
+	long requestId;
 	
 	@ManyToOne
 	@JoinColumn(name="cropId")
+	@JsonIgnore
 	Crop crop;
 	
 	@ManyToOne
 	@JoinColumn(name="bidderId")
 	Bidder bidder;
+	
+	@OneToMany(mappedBy = "bid",cascade = CascadeType.ALL)
+	List<SellRequest> sellRequest;
+	
 	
 	public long getBidId() {
 		return bidId;
@@ -57,12 +65,6 @@ public class Bid {
 	public void setBidApprove(String bidApprove) {
 		this.bidApprove = bidApprove;
 	}
-	public String getBidSold() {
-		return bidSold;
-	}
-	public void setBidSold(String bidSold) {
-		this.bidSold = bidSold;
-	}
 	public Crop getCrop() {
 		return crop;
 	}
@@ -74,5 +76,19 @@ public class Bid {
 	}
 	public void setBidder(Bidder bidder) {
 		this.bidder = bidder;
+	}
+	
+	@JsonIgnore
+	public List<SellRequest> getSellRequest() {
+		return sellRequest;
+	}
+	public void setSellRequest(List<SellRequest> sellRequest) {
+		this.sellRequest = sellRequest;
+	}
+	public long getRequestId() {
+		return requestId;
+	}
+	public void setRequestId(long requestId) {
+		this.requestId = requestId;
 	}
 }
