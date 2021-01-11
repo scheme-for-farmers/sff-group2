@@ -37,11 +37,10 @@ public class BidderBank {
 	public void setIFSC_code(String iFSC_code) {
 		IFSC_code = iFSC_code;
 	}
-
+	@JsonIgnore
 	public Bidder getBidder() {
 		return bidder;
 	}
-
 	public void setBidder(Bidder bidder) {
 		this.bidder = bidder;
 	}
