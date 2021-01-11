@@ -93,11 +93,6 @@ public class SchemeController {
 			}
 		}
 	}
-	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
-	public long addOrUpdateAdmin(@RequestBody Admin admin) {
-	
-		return adminService.addOrUpdateAdmin(admin);
-	}
 	
 	
 	@RequestMapping(value = "/addCrop", method = RequestMethod.POST)
