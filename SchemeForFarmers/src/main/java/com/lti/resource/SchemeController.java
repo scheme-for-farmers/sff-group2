@@ -18,6 +18,7 @@ import com.lti.dto.DisplayRequestDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
+import com.lti.entity.Admin;
 import com.lti.entity.Bidder;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
@@ -92,7 +93,13 @@ public class SchemeController {
 			}
 		}
 	}
-
+	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
+	public long addOrUpdateAdmin(@RequestBody Admin admin) {
+	
+		return adminService.addOrUpdateAdmin(admin);
+	}
+	
+	
 	@RequestMapping(value = "/addCrop", method = RequestMethod.POST)
 	public long addOrUpdateCrop(@RequestBody Crop crop) {
 //		{
