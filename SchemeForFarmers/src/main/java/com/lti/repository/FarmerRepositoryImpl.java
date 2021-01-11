@@ -30,6 +30,19 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 			return null;
 		}
 	}
+	@Transactional
+	public Farmer fetchFarmerByEmailWithApproveYes(String farmerEmail) {
+		try {
+			String jpql = "select f from Farmer f where farmerEmail=:fEmail and farmerApprove='Yes'";
+			Query query = em.createQuery(jpql);
+			query.setParameter("fEmail", farmerEmail);
+			Farmer farmers = (Farmer) query.getSingleResult();
+			System.out.println("farmers: " + farmers.getFarmerPassword());
+			return farmers;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Transactional
 	public Farmer addOrUpdateFarmer(Farmer farmer) {
@@ -64,23 +77,30 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 
 	@Transactional
 	public Farmer updateFarmerByEmail(String farmerEmail) {
-		String jpql = "update Farmer f set f.farmerApprove='Yes' where f.farmerEmail=:fEmail";
-		Query query = em.createQuery(jpql);
-		query.setParameter("fEmail", farmerEmail);
-		query.executeUpdate();
-		Farmer farmer = fetchFarmerByEmail(farmerEmail);
-		return farmer;
+		try {
+			String jpql = "update Farmer f set f.farmerApprove='Yes' where f.farmerEmail=:fEmail";
+			Query query = em.createQuery(jpql);
+			query.setParameter("fEmail", farmerEmail);
+			query.executeUpdate();
+			Farmer farmer = fetchFarmerByEmail(farmerEmail);
+			return farmer;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Transactional
 	public long rejectFarmer(String farmerEmail) {
-		String jpql1 = "select f from Farmer f where f.farmerEmail=:fEmail";
-		TypedQuery<Farmer> query1 = em.createQuery(jpql1, Farmer.class);
-		query1.setParameter("fEmail", farmerEmail);
-		Farmer f = (Farmer) query1.getSingleResult();
-		long farmerId = f.getFarmerId();
-		em.remove(f);
-		return farmerId;
-
+		try {
+			String jpql1 = "select f from Farmer f where f.farmerEmail=:fEmail";
+			TypedQuery<Farmer> query1 = em.createQuery(jpql1, Farmer.class);
+			query1.setParameter("fEmail", farmerEmail);
+			Farmer f = (Farmer) query1.getSingleResult();
+			long farmerId = f.getFarmerId();
+			em.remove(f);
+			return farmerId;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 }

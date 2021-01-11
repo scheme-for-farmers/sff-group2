@@ -17,4 +17,7 @@ public class CropServiceImpl implements CropService {
 	public Crop findCropById(long cropId) {
 		return cropRepository.findCropById(cropId);
 	}
+	public long deleteCrop(long cropId) {
+		return cropRepository.deleteCrop(cropId);
+	}
 }

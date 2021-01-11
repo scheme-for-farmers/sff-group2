@@ -15,6 +15,7 @@ public class BidderBank {
 	@Id
 	@SequenceGenerator(name="seq_bidderBank",initialValue=10000,allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_bidderBank")
+	long bidderBankId;
 	long accNo;
 	String IFSC_code;
 	
@@ -43,6 +44,14 @@ public class BidderBank {
 	}
 	public void setBidder(Bidder bidder) {
 		this.bidder = bidder;
+	}
+
+	public long getBidderBankId() {
+		return bidderBankId;
+	}
+
+	public void setBidderBankId(long bidderBankId) {
+		this.bidderBankId = bidderBankId;
 	}
 	
 }

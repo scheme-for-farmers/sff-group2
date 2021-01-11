@@ -14,6 +14,7 @@ public class FarmerBank {
 	@Id
 	@SequenceGenerator(name="seq_farmerBank",initialValue=20000,allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_farmerBank")
+	long farmerBankId;
 	long accNo;
 	String IFSC_code;
 	
@@ -44,6 +45,12 @@ public class FarmerBank {
 	public void setFarmer(Farmer farmer) {
 		this.farmer = farmer;
 	}
-	
-	
+
+	public long getFarmerBankId() {
+		return farmerBankId;
+	}
+
+	public void setFarmerBankId(long farmerBankId) {
+		this.farmerBankId = farmerBankId;
+	}
 }

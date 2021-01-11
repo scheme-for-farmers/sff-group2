@@ -49,6 +49,19 @@ public class BidderRepositoryImpl implements BidderRepository {
 			return null;
 		}
 	}
+	
+	@Transactional
+	public Bidder fetchBidderByEmailWithApproveYes(String bidderEmail) {
+		try {
+			String jpql = "select b from Bidder b where bidderEmail=:bEmail and bidderApprove='yes'";
+			Query query = em.createQuery(jpql);
+			query.setParameter("bEmail", bidderEmail);
+			Bidder bidders = (Bidder) query.getSingleResult();
+			return bidders;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	@Transactional
 	public List<Bidder> fetchApprovalPendingBidders() { // to display farmers with approve="No"
@@ -59,12 +72,17 @@ public class BidderRepositoryImpl implements BidderRepository {
 
 	@Transactional
 	public Bidder updateBidderByEmail(String bidderEmail) {
-		String jpql = "update Bidder b set b.bidderApprove='Yes' where b.bidderEmail=:bEmail";
-		Query query = em.createQuery(jpql);
-		query.setParameter("bEmail", bidderEmail);
-		query.executeUpdate();
-		Bidder bidder = fetchBidderByEmail(bidderEmail);
-		return bidder;
+		try {
+			String jpql = "update Bidder b set b.bidderApprove='Yes' where b.bidderEmail=:bEmail";
+			Query query = em.createQuery(jpql);
+			query.setParameter("bEmail", bidderEmail);
+			query.executeUpdate();
+			Bidder bidder = fetchBidderByEmail(bidderEmail);
+			System.out.println("repo: "+bidder.getBidderEmail());
+			return bidder;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Transactional

@@ -31,27 +31,36 @@ public class FarmerServiceImpl implements FarmerService {
 	@Autowired
 	EmailService emailService;
 
+	public boolean checkDuplicate(String farmerEmail) {
+		Farmer farmer = farmerRepository.fetchFarmerByEmail(farmerEmail);
+		if (farmer == null)
+			return true;
+		return false;
+	}
+
 	public long registerFarmer(Farmer farmer) {
-		farmer.getFarmerAddress().setFarmer(farmer);
-		farmer.getFarmerBank().setFarmer(farmer);
-		farmer.getFarmerLand().setFarmer(farmer);
-		farmer.setFarmerApprove("no");
-		Farmer newFarmer = farmerRepository.addOrUpdateFarmer(farmer);
-		if (newFarmer != null)
-		{
-			if(newFarmer.getFarmerId()>0)
+		boolean output = checkDuplicate(farmer.getFarmerEmail());
+		if(output) {
+			farmer.getFarmerAddress().setFarmer(farmer);
+			farmer.getFarmerBank().setFarmer(farmer);
+			farmer.getFarmerLand().setFarmer(farmer);
+			farmer.setFarmerApprove("no");
+			Farmer newFarmer = farmerRepository.addOrUpdateFarmer(farmer);
+			if (newFarmer != null)
 			{
-				String subject = "Registeration successful";
-	            String email =newFarmer.getFarmerEmail();
-	            String text = "Hi " + newFarmer.getFarmerName()+ "!! Your registeration Id is " + newFarmer.getFarmerId()+" waiting for approval";
-	            emailService.sendEmailForNewRegistration(email, text, subject);
-	            System.out.println("Email sent successfully");
-	            return newFarmer.getFarmerId();
+				if(newFarmer.getFarmerId()>0)
+				{
+					String subject = "Registeration successful";
+					String email =newFarmer.getFarmerEmail();
+					String text = "Hi " + newFarmer.getFarmerName()+ 
+							"!! Your registeration Id is " + newFarmer.getFarmerId()+" waiting for approval";
+					emailService.sendEmailForNewRegistration(email, text, subject);
+					System.out.println("Email sent successfully");
+					return newFarmer.getFarmerId();
+				}
 			}
 		}
-			
 		return 0; 
-
 	}
 
 	public String isValidUser(String farmerEmail, String farmerPassword) {
