@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.entity.Admin;
@@ -102,4 +103,31 @@ public class AdminServiceImpl implements AdminService {
 		else
 			return "unsold";
 	}
+	
+	public List<ApprovalBidDto>fetchApprovalPendingBids() {
+		List<Bid> bids = bidRepository.fetchBidsByBidApproveNo();
+		List<ApprovalBidDto> appBidDto = new ArrayList<ApprovalBidDto>();
+		for(Bid b : bids) {
+			ApprovalBidDto appDto = new ApprovalBidDto();
+			appDto.setBidId(b.getBidId());
+			appDto.setBidderEmail(b.getBidder().getBidderEmail());
+			appDto.setCropName(b.getCrop().getCropName());
+			appDto.setCropType(b.getCrop().getCropType());
+			appDto.setCurrentBidAmount(b.getBidAmount());
+			appBidDto.add(appDto);
+		}
+		return appBidDto;
+	}
+	
+	public long approveBid(long bidId)
+	{
+		Bid bid=bidRepository.updateBidBybidId(bidId);
+		if(bid!=null)
+		{
+			return bid.getBidId();
+		}
+		else
+			return 0;
+	}
+	
 }

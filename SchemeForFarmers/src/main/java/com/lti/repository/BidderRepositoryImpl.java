@@ -44,4 +44,6 @@ public class BidderRepositoryImpl implements BidderRepository {
 			return null;
 		}
 	}
+	
+	
 }

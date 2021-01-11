@@ -10,4 +10,7 @@ public interface BidRepository {
 	public List<Double> previousBidsByCropId(long cropId);
 	public List<Bid> fetchAllBidsByApproveYes();
 	public Bid fetchBidByBidId(long bidId);
+	public List<Bid> fetchBidsByBidApproveNo();
+	public Bid updateBidBybidId(long bidId);
+
 }

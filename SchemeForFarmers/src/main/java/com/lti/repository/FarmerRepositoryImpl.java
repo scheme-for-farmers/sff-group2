@@ -14,6 +14,21 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 	@PersistenceContext
 	EntityManager em;
 
+	
+	@Transactional
+	public Farmer fetchFarmerByEmail(String farmerEmail) {
+		try {
+				String jpql = "select f from Farmer f where farmerEmail=:fEmail";
+				Query query = em.createQuery(jpql);
+				query.setParameter("fEmail", farmerEmail);
+				Farmer farmers = (Farmer) query.getSingleResult();
+				System.out.println("farmers: " + farmers.getFarmerPassword());
+				return farmers;
+			} catch (Exception e) {
+				return null;
+			}
+	}
+	
 	@Transactional
 	public Farmer addOrUpdateFarmer(Farmer farmer) {
 		try {
