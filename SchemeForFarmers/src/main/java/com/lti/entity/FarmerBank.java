@@ -39,7 +39,7 @@ public class FarmerBank {
 		this.ifscCode = ifscCode;
 	}
 
-	//@JsonIgnore
+	@JsonIgnore
 	public Farmer getFarmer() {
 		return farmer;
 	}
