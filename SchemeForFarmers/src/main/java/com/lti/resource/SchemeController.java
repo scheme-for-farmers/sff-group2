@@ -178,7 +178,7 @@ public class SchemeController {
 		return bidService.fetchApprovedSellRequest();
 	}
 
-	@RequestMapping(value = "/placeBid", method = RequestMethod.GET)
+	@RequestMapping(value = "/placeBid", method = RequestMethod.POST)
 	public long PlaceBidRequest(@RequestBody DisplayRequestDto displayRequestDto) {
 		return bidService.placeBid(displayRequestDto);
 	}
