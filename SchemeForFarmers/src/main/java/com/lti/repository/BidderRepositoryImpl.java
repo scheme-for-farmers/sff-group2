@@ -73,7 +73,7 @@ public class BidderRepositoryImpl implements BidderRepository {
 	@Transactional
 	public Bidder updateBidderByEmail(String bidderEmail) {
 		try {
-			String jpql = "update Bidder b set b.bidderApprove='Yes' where b.bidderEmail=:bEmail";
+			String jpql = "update Bidder b set b.bidderApprove='yes' where b.bidderEmail=:bEmail";
 			Query query = em.createQuery(jpql);
 			query.setParameter("bEmail", bidderEmail);
 			query.executeUpdate();

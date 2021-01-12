@@ -225,7 +225,7 @@ public class SchemeController {
 	
 	@RequestMapping(value="/uploadFarmerDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
 //	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto)
+	public long uploadFarmerDocument(DocumentDto documentDto)
 	{
 		return farmerService.uploadDocument(documentDto);
 	}

@@ -82,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
 
 	public long rejectSellRequestApproval(long requestId) {
 		SellRequest sellRequest = sellRequestRepository.removeSellRequestByRequestId(requestId);
+		System.out.println("id: "+sellRequest.getRequestId());
 		if (sellRequest != null) {
 			if (sellRequest.getRequestId() > 0) {
 				String subject = "Oops:-( SellRequest Rejected ";
@@ -117,7 +118,7 @@ public class AdminServiceImpl implements AdminService {
 		Bid bid = bidRepository.fetchBidByBidId(bidId);
 		long requestId = bid.getRequestId();
 		SellRequest newSellRequest = new SellRequest();
-		SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestId(requestId);
+		SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestIdWithApproveYes(requestId);
 		if (sellRequest != null && bid!=null) {
 			sellRequest.setStatus("sold");
 			sellRequest.setBid(bid);

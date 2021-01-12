@@ -39,12 +39,21 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 	
 	public SellRequest fetchSellRequestByRequestId(long requestId) {
 		
+		String jpql = "select s from SellRequest s where s.requestId=:rid";
+		Query query = em.createQuery(jpql);
+		query.setParameter("rid", requestId);
+		SellRequest sellRequest=(SellRequest)query.getSingleResult();
+		return sellRequest;
+	}
+	public SellRequest fetchSellRequestByRequestIdWithApproveYes(long requestId) {
+		
 		String jpql = "select s from SellRequest s where s.requestId=:rid and approve='yes'";
 		Query query = em.createQuery(jpql);
 		query.setParameter("rid", requestId);
 		SellRequest sellRequest=(SellRequest)query.getSingleResult();
 		return sellRequest;
 	}
+
 	@Transactional
 	public SellRequest updateSellRequestByRequestId(long requestId) {
 		try {
@@ -60,14 +69,17 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 	}
 	@Transactional
 	public SellRequest removeSellRequestByRequestId(long requestId) {
-		// TODO Auto-generated method stub
-		SellRequest sellRequest=fetchSellRequestByRequestId(requestId);
-		//em.remove(sellRequest);
-		String jpql="delete from SellRequest s where s.requestId=:rid";
-		Query query = em.createQuery(jpql);
-		query.setParameter("rid", requestId);
-		query.executeUpdate();
-		return sellRequest;
+		try {
+			SellRequest sellRequest=fetchSellRequestByRequestId(requestId);
+			System.out.println("id: "+sellRequest.getRequestId());
+			String jpql="delete from SellRequest s where s.requestId=:rid";
+			Query query = em.createQuery(jpql);
+			query.setParameter("rid", requestId);
+			query.executeUpdate();
+			return sellRequest;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	@Transactional
 	public List<SellRequest> fetchApprovedSellRequest() {

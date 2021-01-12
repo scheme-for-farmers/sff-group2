@@ -40,7 +40,7 @@ public class BidderBank {
 		this.ifscCode = ifscCode;
 	}
 
-	//@JsonIgnore
+	@JsonIgnore
 	public Bidder getBidder() {
 		return bidder;
 	}
