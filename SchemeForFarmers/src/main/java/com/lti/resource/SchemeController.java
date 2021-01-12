@@ -50,6 +50,7 @@ public class SchemeController {
 
 	@RequestMapping(value = "/placeSellRequest", method = RequestMethod.POST)
 	public long placeSellRequest(@RequestBody SellRequestDto sellRequestDto) {
+		System.out.print(sellRequestDto.getCropName()+" "+sellRequestDto.getCropType()+" "+sellRequestDto.getFarmerEmail()+" "+sellRequestDto.getQuantity());
 		return sellRequestService.placeSellRequest(sellRequestDto);
 	}
 

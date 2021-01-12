@@ -51,6 +51,12 @@ public class BidServiceImpl implements BidService {
 			Crop crop=cropRepository.findCropByCropNameAndCropType(displayRequestDto.getCropName(),displayRequestDto.getCropType());
 			double maxBidAmount=bidRepository.findMaximumBidAmount(crop.getCropId());
 			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestIdWithApproveYes(displayRequestDto.getRequestId());
+			
+			System.out.print(crop.getCropId());
+			System.out.print(sellRequest.getFarmer());
+			System.out.print(bidder.getBidderId());
+			
+			
 			if(displayRequestDto.getCurrentBidAmount()>maxBidAmount && bidder!=null && crop!=null && sellRequest!=null)
 			{
 				Bid bid=new Bid();
