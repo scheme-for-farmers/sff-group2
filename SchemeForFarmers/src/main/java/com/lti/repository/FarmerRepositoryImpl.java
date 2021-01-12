@@ -33,7 +33,7 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 	@Transactional
 	public Farmer fetchFarmerByEmailWithApproveYes(String farmerEmail) {
 		try {
-			String jpql = "select f from Farmer f where farmerEmail=:fEmail and farmerApprove='Yes'";
+			String jpql = "select f from Farmer f where farmerEmail=:fEmail and farmerApprove='yes'";
 			Query query = em.createQuery(jpql);
 			query.setParameter("fEmail", farmerEmail);
 			Farmer farmers = (Farmer) query.getSingleResult();
@@ -78,7 +78,7 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 	@Transactional
 	public Farmer updateFarmerByEmail(String farmerEmail) {
 		try {
-			String jpql = "update Farmer f set f.farmerApprove='Yes' where f.farmerEmail=:fEmail";
+			String jpql = "update Farmer f set f.farmerApprove='yes' where f.farmerEmail=:fEmail";
 			Query query = em.createQuery(jpql);
 			query.setParameter("fEmail", farmerEmail);
 			query.executeUpdate();

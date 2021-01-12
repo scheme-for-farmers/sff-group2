@@ -2,8 +2,10 @@ package com.lti.resource;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -205,7 +207,6 @@ public class SchemeController {
 	@GetMapping(value = "/forgotPassword/{email}")
 	public String forgotPassword(@PathVariable("email") String Email) {
 		String s = farmerService.forgotPassword(Email);
-		System.out.println(Email);
 		if (s != null)
 			return s;
 		else {
@@ -222,10 +223,18 @@ public class SchemeController {
 		}
 	}
 	
-	@RequestMapping(value="/uploadDoc",method=RequestMethod.POST,consumes="multipart/form-data")
-	public long uploadDocument(@RequestBody DocumentDto documentDto)
+	@RequestMapping(value="/uploadFarmerDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto)
 	{
 		return farmerService.uploadDocument(documentDto);
+	}
+	
+	@RequestMapping(value="/uploadBidderDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto)
+	{
+		return bidderService.uploadDocument(documentDto);
 	}
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long addAdmin(@RequestBody Admin admin) {

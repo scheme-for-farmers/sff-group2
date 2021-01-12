@@ -1,9 +1,14 @@
 package com.lti.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
+import com.lti.dto.DocumentDto;
 import com.lti.entity.Bidder;
 import com.lti.entity.Farmer;
 import com.lti.repository.BidderRepository;
@@ -60,8 +65,37 @@ public class BidderServiceImpl implements BidderService {
 	public String forgotPassword(String bidderEmail) {
 		Bidder bidder = bidderRepository.fetchBidderByEmail(bidderEmail);
 		if (bidder != null)
+		{
+			String subject = "Password Recovery";
+			String email =bidder.getBidderEmail();
+			String text = "Hi " + bidder.getBidderName()+
+			"!! Your password is " + bidder.getBidderPassword();
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
 			return bidder.getBidderPassword();
+		}
 		else
 			return null;
 	}
+	public long uploadDocument(DocumentDto documentDto) {
+		String bidderMail=documentDto.getMail();
+		Bidder bidder=bidderRepository.fetchBidderByEmail(bidderMail);
+		String imgUploadLocation = "e:/uploads/";
+		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
+		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
+		String newaadharFileName = bidder.getBidderId()+"-"+aadharFileName;
+		String newFileName = bidder.getBidderId() + "-" + uploadedFileName;
+		String targetFileName = imgUploadLocation + newFileName;
+		String targetAadharFileName = imgUploadLocation+newaadharFileName;
+
+		try {
+			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
+			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetAadharFileName));
+			bidder.setBidderAadhar(newaadharFileName);
+			bidder.setBidderPan(newFileName);
+			return bidderRepository.addOrUpdateBidder(bidder).getBidderId();
+		} catch(IOException e) {
+			return 0;
+		}
+	}	
 }

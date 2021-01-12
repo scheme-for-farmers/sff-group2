@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class DocumentDto {
 	String mail;
 	MultipartFile pancard;
-	
+	MultipartFile aadharCard;
 	public String getMail() {
 		return mail;
 	}
@@ -18,8 +18,11 @@ public class DocumentDto {
 	public void setPancard(MultipartFile pancard) {
 		this.pancard = pancard;
 	}
+	public MultipartFile getAadharCard() {
+		return aadharCard;
+	}
+	public void setAadharCard(MultipartFile aadharCard) {
+		this.aadharCard = aadharCard;
+	}
 	
-	
-	
-
 }
