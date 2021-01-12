@@ -16,7 +16,7 @@ public class FarmerBank {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_farmerBank")
 	long farmerBankId;
 	long accNo;
-	String IFSC_code;
+	String ifscCode;
 	
 	@OneToOne
 	@JoinColumn(name="farmerId")
@@ -30,14 +30,16 @@ public class FarmerBank {
 		this.accNo = accNo;
 	}
 
-	public String getIFSC_code() {
-		return IFSC_code;
+	
+	public String getIfscCode() {
+		return ifscCode;
 	}
 
-	public void setIFSC_code(String iFSC_code) {
-		IFSC_code = iFSC_code;
+	public void setIfscCode(String ifscCode) {
+		this.ifscCode = ifscCode;
 	}
-	@JsonIgnore
+
+	//@JsonIgnore
 	public Farmer getFarmer() {
 		return farmer;
 	}

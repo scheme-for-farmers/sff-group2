@@ -25,6 +25,8 @@ public class Bidder {
 	String bidderEmail;
 	String bidderPassword;
 	String bidderApprove;
+	String bidderPan;
+	String bidderAadhar;
 	
 	@OneToOne(mappedBy="bidder",cascade=CascadeType.ALL)
 	BidderAddress bidderAddress;
@@ -106,7 +108,21 @@ public class Bidder {
 	public void setBid(List<Bid> bid) {
 		this.bid = bid;
 	}
-	
 
+	public String getBidderPan() {
+		return bidderPan;
+	}
+
+	public void setBidderPan(String bidderPan) {
+		this.bidderPan = bidderPan;
+	}
+
+	public String getBidderAadhar() {
+		return bidderAadhar;
+	}
+
+	public void setBidderAadhar(String bidderAadhar) {
+		this.bidderAadhar = bidderAadhar;
+	}
 	
 }

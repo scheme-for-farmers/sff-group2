@@ -1,11 +1,15 @@
 package com.lti.service;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
+import com.lti.dto.DocumentDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SoldHistoryDto;
 import com.lti.entity.Crop;
@@ -111,9 +115,38 @@ public class FarmerServiceImpl implements FarmerService {
 
 	public String forgotPassword(String farmerEmail) {
 		Farmer farmer = farmerRepository.fetchFarmerByEmail(farmerEmail);
-		if (farmer != null)
+		if (farmer != null) {
+			String subject = "Password Recovery!!";
+			String email =farmer.getFarmerEmail();
+			String text = "Hi " + farmer.getFarmerName()+ 
+					"!! Your password is " + farmer.getFarmerPassword();
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
 			return farmer.getFarmerPassword();
+		}
 		else
 			return null;
 	}
+	
+	public long uploadDocument(DocumentDto documentDto) {
+		String farmerMail=documentDto.getMail();
+		Farmer farmer=farmerRepository.fetchFarmerByEmail(farmerMail);
+		String imgUploadLocation = "e:/uploads/";
+		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
+		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
+		String newaadharFileName = farmer.getFarmerId()+"-"+aadharFileName;
+		
+		String newFileName = farmer.getFarmerId() + "-" + uploadedFileName;
+		String targetFileName = imgUploadLocation + newFileName;
+		String targetAadharFileName = imgUploadLocation+newaadharFileName;
+		try {
+			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
+			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetAadharFileName));
+			farmer.setFarmerAadhar(newaadharFileName);
+			farmer.setFarmerPan(newFileName);
+			return farmerRepository.addOrUpdateFarmer(farmer).getFarmerId();
+		} catch(IOException e) {
+			return 0;
+		}
+	}	
 }

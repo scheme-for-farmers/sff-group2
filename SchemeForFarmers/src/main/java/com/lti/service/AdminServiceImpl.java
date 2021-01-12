@@ -250,7 +250,11 @@ public class AdminServiceImpl implements AdminService {
 	public String forgotPassword(String adminEmail) {
 		Admin admin = adminRepository.fetchAdminByEmail(adminEmail);
 		if (admin != null) {
-			System.out.println(admin.getAdminPassword());
+			String subject = "Password Recovery";
+			String email =admin.getAdminEmail();
+			String text = "Hi !! Your password is " + admin.getAdminPassword();
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
 			return admin.getAdminPassword();
 		} else
 			return null;

@@ -2,9 +2,12 @@ package com.lti.resource;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +16,7 @@ import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.dto.DisplayRequestDto;
+import com.lti.dto.DocumentDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
@@ -51,7 +55,7 @@ public class SchemeController {
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long registerFarmer(@RequestBody Farmer farmer) {
-		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
+		System.out.println("hello" + farmer.getFarmerBank().getIfscCode()+" ");
 		return farmerService.registerFarmer(farmer);
 	}
 
@@ -207,7 +211,6 @@ public class SchemeController {
 	@GetMapping(value = "/forgotPassword/{email}")
 	public String forgotPassword(@PathVariable("email") String Email) {
 		String s = farmerService.forgotPassword(Email);
-		System.out.println(Email);
 		if (s != null)
 			return s;
 		else {
@@ -224,19 +227,23 @@ public class SchemeController {
 		}
 	}
 	
+	@RequestMapping(value="/uploadFarmerDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto)
+	{
+		return farmerService.uploadDocument(documentDto);
+	}
 	
-	
-	
-	
+	@RequestMapping(value="/uploadBidderDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto)
+	{
+		return bidderService.uploadDocument(documentDto);
+	}
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long addAdmin(@RequestBody Admin admin) {
 //		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
 		return adminService.addOrUpdateAdmin(admin);
 	}
 
-	
-	
-	
-	
-	
 }

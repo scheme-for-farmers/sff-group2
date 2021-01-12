@@ -24,6 +24,8 @@ public class Farmer {
 	String farmerEmail;
 	String farmerPassword;
 	String farmerApprove;
+	String farmerPan;
+	String farmerAadhar;
 	
 	@OneToOne(mappedBy="farmer",cascade=CascadeType.ALL)
 	FarmerAddress farmerAddress;
@@ -127,6 +129,22 @@ public class Farmer {
 
 	public void setApplyInsurance(List<ApplyInsurance> applyInsurance) {
 		this.applyInsurance = applyInsurance;
+	}
+
+	public String getFarmerPan() {
+		return farmerPan;
+	}
+
+	public void setFarmerPan(String farmerPan) {
+		this.farmerPan = farmerPan;
+	}
+
+	public String getFarmerAadhar() {
+		return farmerAadhar;
+	}
+
+	public void setFarmerAadhar(String farmerAadhar) {
+		this.farmerAadhar = farmerAadhar;
 	}
 	
 }
