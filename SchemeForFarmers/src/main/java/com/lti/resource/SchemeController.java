@@ -83,12 +83,16 @@ public class SchemeController {
 			} else {
 				boolean admin = adminService.isValidUser(Email, Password);
 				if (admin) {
+					System.out.println("Admin is present");
 					return 3;
 				} else {
 					return 4;
 				}
 			}
 		}
+		
+		
+		
 	}
 	
 	
