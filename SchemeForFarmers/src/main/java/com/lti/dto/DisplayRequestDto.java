@@ -4,7 +4,8 @@ public class DisplayRequestDto {
 	long requestId;
 	String cropType;
 	String cropName;
-	String Email;
+	String farmerEmail;
+	String bidderEmail;
 	double quantity;
 	double currentBidAmount;
 	public long getRequestId() {
@@ -25,11 +26,18 @@ public class DisplayRequestDto {
 	public void setCropName(String cropName) {
 		this.cropName = cropName;
 	}
-	public String getEmail() {
-		return Email;
+	
+	public String getFarmerEmail() {
+		return farmerEmail;
 	}
-	public void setEmail(String Email) {
-		this.Email = Email;
+	public void setFarmerEmail(String farmerEmail) {
+		this.farmerEmail = farmerEmail;
+	}
+	public String getBidderEmail() {
+		return bidderEmail;
+	}
+	public void setBidderEmail(String bidderEmail) {
+		this.bidderEmail = bidderEmail;
 	}
 	public double getQuantity() {
 		return quantity;

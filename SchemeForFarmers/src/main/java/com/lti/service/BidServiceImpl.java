@@ -37,7 +37,7 @@ public class BidServiceImpl implements BidService {
 			approval.setCurrentBidAmount(bidRepository.findMaximumBidAmount(s.getCrop().getCropId()));
 			approval.setCropName(s.getCrop().getCropName());
 			approval.setCropType(s.getCrop().getCropType());
-			approval.setEmail(s.getFarmer().getFarmerEmail());
+			approval.setFarmerEmail(s.getFarmer().getFarmerEmail());
 			approval.setQuantity(s.getQuantity());
 			approval.setRequestId(s.getRequestId());
 			appSellReqDto.add(approval);
@@ -46,8 +46,7 @@ public class BidServiceImpl implements BidService {
 	}
 	public long placeBid(DisplayRequestDto displayRequestDto) {
 		try {
-			
-			Bidder bidder=bidderRepository.fetchBidderByEmailWithApproveYes(displayRequestDto.getEmail());
+			Bidder bidder=bidderRepository.fetchBidderByEmailWithApproveYes(displayRequestDto.getBidderEmail());
 			Crop crop=cropRepository.findCropByCropNameAndCropType(displayRequestDto.getCropName(),displayRequestDto.getCropType());
 			double maxBidAmount=bidRepository.findMaximumBidAmount(crop.getCropId());
 			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestIdWithApproveYes(displayRequestDto.getRequestId());
