@@ -37,7 +37,7 @@ public class Bid {
 	@JoinColumn(name="bidderId")
 	Bidder bidder;
 	
-	@OneToMany(mappedBy = "bid",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "bid",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	List<SellRequest> sellRequest;
 	
 	

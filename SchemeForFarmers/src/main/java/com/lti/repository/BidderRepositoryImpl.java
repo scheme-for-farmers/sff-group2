@@ -44,6 +44,7 @@ public class BidderRepositoryImpl implements BidderRepository {
 			Query query = em.createQuery(jpql);
 			query.setParameter("bEmail", bidderEmail);
 			Bidder bidders = (Bidder) query.getSingleResult();
+			System.out.println("repo: "+bidders.getBidderEmail());
 			return bidders;
 		} catch (Exception e) {
 			return null;
