@@ -172,7 +172,8 @@ public class AdminServiceImpl implements AdminService {
 			appDto.setBidderEmail(b.getBidder().getBidderEmail());
 			appDto.setCropName(b.getCrop().getCropName());
 			appDto.setCropType(b.getCrop().getCropType());
-			appDto.setCurrentBidAmount(b.getBidAmount());
+			appDto.setCurrentBidAmount(b.getBidAmount());//
+			appDto.setRequestId(b.getRequestId());
 			appBidDto.add(appDto);
 		}
 		return appBidDto;

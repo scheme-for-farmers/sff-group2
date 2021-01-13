@@ -90,7 +90,8 @@ public class BidRepositoryImpl implements BidRepository {
 	@Transactional
 	public List<Bid> fetchBidsByBidApproveNo() {
 		try {
-			String jpql = "select b from Bid b where b.bidApprove='no'";
+			String jpql = "select b from Bid b where b.requestId in "
+					+ "(select s.requestId from SellRequest s where s.status='unsold') and b.bidApprove='no' ";
 			Query query = em.createQuery(jpql);
 			return query.getResultList();
 		} catch (Exception e) {

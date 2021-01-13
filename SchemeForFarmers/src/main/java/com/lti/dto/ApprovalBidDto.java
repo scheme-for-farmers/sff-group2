@@ -6,6 +6,7 @@ public class ApprovalBidDto {
 	String cropName;
 	String bidderEmail;
 	double currentBidAmount;
+	long requestId;
 	public long getBidId() {
 		return bidId;
 	}
@@ -36,6 +37,13 @@ public class ApprovalBidDto {
 	public void setCurrentBidAmount(double currentBidAmount) {
 		this.currentBidAmount = currentBidAmount;
 	}
+	public long getRequestId() {
+		return requestId;
+	}
+	public void setRequestId(long requestId) {
+		this.requestId = requestId;
+	}
+	
 	
 	
 }
