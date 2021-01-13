@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.aspectj.apache.bcel.generic.ReturnaddressType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
 import com.lti.entity.SellRequest;
 import com.lti.repository.AdminRepository;
+import com.lti.repository.ApplyInsuranceRepository;
 import com.lti.repository.BidRepository;
 import com.lti.repository.BidderRepository;
 import com.lti.repository.CropRepository;
@@ -44,8 +46,9 @@ public class AdminServiceImpl implements AdminService {
 	InsuranceRepository insuranceRepository;
 	@Autowired
 	CropRepository cropRepository;
+	@Autowired
+	ApplyInsuranceRepository applyInsuranceRepository;
 	
-
 	public long addOrUpdateAdmin(Admin admin) {
 		return adminRepository.addOrUpdateAdmin(admin);
 	}
@@ -285,5 +288,12 @@ public class AdminServiceImpl implements AdminService {
 		if(newInsur!=null)
 			return newInsur.getInsuranceId();
 		return 0;
+	}
+	public long approveInsurance(long policyNo) {
+		return applyInsuranceRepository.updateInsuranceApproval(policyNo);
+	}
+	
+	public long rejectInsuranceApproval(long policyNo) {
+		return applyInsuranceRepository.rejectInsuranceApproval(policyNo);
 	}
 }

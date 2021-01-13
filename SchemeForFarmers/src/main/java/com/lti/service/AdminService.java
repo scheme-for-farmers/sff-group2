@@ -28,6 +28,7 @@ public interface AdminService {
     public long rejectFarmer(String farmerEmail);
     public long rejectBidder(String bidderEmail);
     public String forgotPassword(String adminEmail);
-    
     public long addOrUpdateInsurance(InsuranceDto insuranceDto);
+    public long approveInsurance(long policyNo);
+    public long rejectInsuranceApproval(long policyNo);
 }

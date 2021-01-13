@@ -90,4 +90,12 @@ public class ApplyInsurance {
 		this.farmer = farmer;
 	}
 
+	public String getCropName() {
+		return cropName;
+	}
+
+	public void setCropName(String cropName) {
+		this.cropName = cropName;
+	}
+
 }

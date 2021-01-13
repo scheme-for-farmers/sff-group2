@@ -23,6 +23,7 @@ import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
 import com.lti.entity.Admin;
+import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Bidder;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
@@ -32,6 +33,7 @@ import com.lti.service.BidService;
 import com.lti.service.BidderService;
 import com.lti.service.CropService;
 import com.lti.service.FarmerService;
+import com.lti.service.InsuranceService;
 import com.lti.service.SellRequestService;
 
 @RestController
@@ -50,6 +52,8 @@ public class SchemeController {
 	BidService bidService;
 	@Autowired
 	SellRequestService sellRequestService;
+	@Autowired
+	InsuranceService insuranceService;
 
 	@RequestMapping(value = "/placeSellRequest", method = RequestMethod.POST)
 	public long placeSellRequest(@RequestBody SellRequestDto sellRequestDto) {
@@ -259,10 +263,24 @@ public class SchemeController {
 		
 		return adminService.addOrUpdateInsurance(insuranceDto);
 	}
-	@RequestMapping(value = "/calculateInsurance", method = RequestMethod.POST)
-	public CalculateInsuranceDto calculate(String cropName,String cropType, double area)
+	@RequestMapping(value = "/calculateInsurance/{cName}/{cType}/{area}", method = RequestMethod.GET)
+	public CalculateInsuranceDto calculate(@PathVariable("cName") String cropName,@PathVariable("cType") String cropType, @PathVariable("area") double area)
 	{
-		return null;
+		return insuranceService.calculate(cropName, cropType, area);
 	}
-
+	
+	@RequestMapping(value = "/applyInsurance", method = RequestMethod.POST)
+	public long applyInsurance(@RequestBody CalculateInsuranceDto calculateInsuranceDto) {
+		return insuranceService.applyInsurance(calculateInsuranceDto);
+	}
+	
+	@RequestMapping(value = "/approveInsurance/{rId}", method = RequestMethod.GET)
+	public long approveInsurance(@PathVariable("rId") long insuranceId) {
+		return adminService.approveInsurance(insuranceId);
+	}
+	
+	@RequestMapping(value = "/rejectInsurance/{rId}", method = RequestMethod.GET)
+	public long rejectInsurance(@PathVariable("rId") long policyNo) {
+		return adminService.rejectInsuranceApproval(policyNo);
+	}
 }

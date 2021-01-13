@@ -4,5 +4,5 @@ import com.lti.dto.CalculateInsuranceDto;
 
 public interface InsuranceService {
 	public CalculateInsuranceDto calculate(String cropName,String cropType,double Area);
-
+	public long applyInsurance(CalculateInsuranceDto calculateInsuranceDto);
 }
