@@ -14,6 +14,4 @@ public class SchemeForFarmersApplication {
 		SpringApplication.run(SchemeForFarmersApplication.class, args);
 		System.out.println("hello");
 	}
-	
-	
 }

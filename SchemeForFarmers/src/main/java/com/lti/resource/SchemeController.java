@@ -214,20 +214,20 @@ public class SchemeController {
 	}
 
 	@GetMapping(value = "/forgotPassword/{email}")
-	public String forgotPassword(@PathVariable("email") String Email) {
+	public int forgotPassword(@PathVariable("email") String Email) {
 		String s = farmerService.forgotPassword(Email);
 		if (s != null)
-			return s;
+			return 1;
 		else {
 			String s1 = bidderService.forgotPassword(Email);
 			if (s1 != null)
-				return s1;
+				return 2;
 			else {
 				String s2 = adminService.forgotPassword(Email);
 				if (s2 != null)
-					return s2;
+					return 3;
 				else
-					return "invalid user";
+					return 0;
 			}
 		}
 	}
