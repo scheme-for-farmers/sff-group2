@@ -14,7 +14,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 	@Override
 	public CalculateInsuranceDto calculate(String cropName, String cropType, double Area) {
 		Crop crop=cropRepository.findCropByCropNameAndCropType(cropName, cropType);
-		Insurance insurance;
+//		Insurance insurance;
 		return null;
 	}
 
