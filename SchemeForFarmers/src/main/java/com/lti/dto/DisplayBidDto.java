@@ -8,6 +8,7 @@ public class DisplayBidDto {
 	LocalDate bidDate;
 	String cropType;
 	String cropName;
+	String farmerEmail;
 	String bidderEmail;
 	double bidAmount;
 	public long getBidId() {
@@ -51,6 +52,12 @@ public class DisplayBidDto {
 	}
 	public void setBidAmount(double bidAmount) {
 		this.bidAmount = bidAmount;
+	}
+	public String getFarmerEmail() {
+		return farmerEmail;
+	}
+	public void setFarmerEmail(String farmerEmail) {
+		this.farmerEmail = farmerEmail;
 	}
 	
 }

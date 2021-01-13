@@ -21,9 +21,22 @@ public class BidRepositoryImpl implements BidRepository {
 	}
 	
 	@Transactional
+	public double findMaximumBidAmountByRequestId(long cropId,long requestId) {
+		try {
+			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and bidApprove='yes' and b.requestId=:rId";
+			Query query = em.createQuery(jpql);
+			query.setParameter("cId", cropId);
+			query.setParameter("rId", requestId);
+			double maxBidAmount = (Double) query.getSingleResult();
+			return maxBidAmount;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	@Transactional
 	public double findMaximumBidAmount(long cropId) {
 		try {
-			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and bidApprove='yes'";
+			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and bidApprove='yes' ";
 			Query query = em.createQuery(jpql);
 			query.setParameter("cId", cropId);
 			double maxBidAmount = (Double) query.getSingleResult();
@@ -32,6 +45,7 @@ public class BidRepositoryImpl implements BidRepository {
 			return 0;
 		}
 	}
+	
 
 	@Transactional
 	public List<Double> previousBidsByCropId(long cropId) {

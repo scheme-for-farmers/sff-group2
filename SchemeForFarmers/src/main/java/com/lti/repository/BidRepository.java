@@ -12,5 +12,6 @@ public interface BidRepository {
 	public Bid fetchBidByBidId(long bidId);
 	public List<Bid> fetchBidsByBidApproveNo();
 	public Bid updateBidBybidId(long bidId);
+	public double findMaximumBidAmountByRequestId(long cropId,long requestId);
 
 }

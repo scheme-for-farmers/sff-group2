@@ -111,6 +111,7 @@ public class AdminServiceImpl implements AdminService {
 		List<Bid> bids = bidRepository.fetchAllBidsByApproveYes();
 		List<DisplayBidDto> displayBidDto = new ArrayList<DisplayBidDto>();
 		for (Bid b : bids) {
+			SellRequest s=sellRequestRepository.fetchSellRequestByRequestId(b.getRequestId());
 			DisplayBidDto disDto = new DisplayBidDto();
 			disDto.setBidAmount(b.getBidAmount());
 			disDto.setBidDate(b.getBidDate());
@@ -118,6 +119,7 @@ public class AdminServiceImpl implements AdminService {
 			disDto.setCropName(b.getCrop().getCropName());
 			disDto.setCropType(b.getCrop().getCropType());
 			disDto.setBidId(b.getBidId());
+			disDto.setFarmerEmail(s.getFarmer().getFarmerEmail());
 			disDto.setRequestId(b.getRequestId());
 			displayBidDto.add(disDto);
 		}
