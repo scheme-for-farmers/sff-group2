@@ -84,7 +84,7 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 	@Transactional
 	public List<SellRequest> fetchApprovedSellRequest() {
 		try {
-			String jpql = "select s from SellRequest s where s.approve='yes'";
+			String jpql = "select s from SellRequest s where s.approve='yes' and s.status='unsold'";
 			Query query = em.createQuery(jpql);
 			return query.getResultList();
 		} catch (Exception e) {

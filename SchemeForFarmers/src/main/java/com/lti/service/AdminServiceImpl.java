@@ -114,7 +114,7 @@ public class AdminServiceImpl implements AdminService {
 		return displayBidDto;
 	}
 
-	public String sellCropToBidder(long bidId) {
+	public int sellCropToBidder(long bidId) {
 		Bid bid = bidRepository.fetchBidByBidId(bidId);
 		long requestId = bid.getRequestId();
 		SellRequest newSellRequest = new SellRequest();
@@ -142,10 +142,10 @@ public class AdminServiceImpl implements AdminService {
 						+ " will be credited to your registered bank account";
 				emailService.sendEmailForNewRegistration(farmeremail, farmertext, farmersubject);
 				System.out.println("Farmer Email sent successfully");
-				return "Sold";
+				return 1;
 			}
 		}
-		return "unsold";
+		return 0;
 	}
 
 	public List<ApprovalBidDto> fetchApprovalPendingBids() {

@@ -24,38 +24,33 @@ public class SellRequestServiceImpl implements SellRequestService {
 	BidRepository bidRepository;
 	@Autowired
 	EmailService emailService;
-	public long placeSellRequest(SellRequestDto sellRequestDto)
-	{
+
+	public long placeSellRequest(SellRequestDto sellRequestDto) {
 		try {
 			SellRequest sellRequest = new SellRequest();
 			SellRequest newsellRequest = new SellRequest();
-			Farmer farmer=farmerRepository.fetchFarmerByEmailWithApproveYes(sellRequestDto.getFarmerEmail());
-			System.out.println("farmer: "+ farmer.getFarmerEmail());
-			Crop crop=cropRepository.findCropByCropNameAndCropType(sellRequestDto.getCropName(), sellRequestDto.getCropType());
-			if(crop!=null && farmer!=null) {
+			Farmer farmer = farmerRepository.fetchFarmerByEmailWithApproveYes(sellRequestDto.getFarmerEmail());
+			System.out.println("farmer: " + farmer.getFarmerEmail());
+			Crop crop = cropRepository.findCropByCropNameAndCropType(sellRequestDto.getCropName(),
+					sellRequestDto.getCropType());
+//			if (crop != null && farmer != null) {
 				sellRequest.setApprove("no");
 				sellRequest.setStatus("unsold");
 				sellRequest.setFarmer(farmer);
 				sellRequest.setCrop(crop);
 				sellRequest.setQuantity(sellRequestDto.getQuantity());
 				newsellRequest = sellRequestRepository.addOrUpdateSellRequest(sellRequest);
-			}
-			if (newsellRequest != null) {
-				if(newsellRequest.getRequestId()>0)
-				{
-					String subject = "Registeration successful";
-		            String email =newsellRequest.getFarmer().getFarmerEmail();
-		            String text = "Hi " + newsellRequest.getFarmer().getFarmerName()+ "!! Your sellRequest is placed for " 
-		            + newsellRequest.getCrop().getCropName()+"!!. And your request id is "+newsellRequest.getRequestId()+" waiting for approval";
-		            emailService.sendEmailForNewRegistration(email, text, subject);
-		            System.out.println("Email sent successfully");
-				} 
-				 return newsellRequest.getRequestId();
-			}
-			return 0;
+				System.out.println("reid: " + newsellRequest.getRequestId());
+				String subject = "Registeration successful";
+				String email = newsellRequest.getFarmer().getFarmerEmail();
+				String text = "Hi " + newsellRequest.getFarmer().getFarmerName() + "!! Your sellRequest is placed for "
+					+ newsellRequest.getCrop().getCropName() + "!!. And your request id is "
+					+ newsellRequest.getRequestId() + " waiting for approval";
+				emailService.sendEmailForNewRegistration(email, text, subject);
+				System.out.println("Email sent successfully");
+				return newsellRequest.getRequestId();
 		} catch (Exception e) {
 			return 0;
 		}
 	}
-
 }
