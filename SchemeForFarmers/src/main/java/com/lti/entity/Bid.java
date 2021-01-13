@@ -78,7 +78,7 @@ public class Bid {
 		this.bidder = bidder;
 	}
 	
-	@JsonIgnore
+//	@JsonIgnore
 	public List<SellRequest> getSellRequest() {
 		return sellRequest;
 	}

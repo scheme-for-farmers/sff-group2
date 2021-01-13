@@ -189,7 +189,7 @@ public class SchemeController {
 	}
 
 	@RequestMapping(value = "/sellCrop/{bId}", method = RequestMethod.GET)
-	public String sellCropToBidder(@PathVariable("bId") long bidId) {
+	public int sellCropToBidder(@PathVariable("bId") long bidId) {
 		return adminService.sellCropToBidder(bidId);
 	}
 

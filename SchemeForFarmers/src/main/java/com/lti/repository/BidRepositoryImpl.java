@@ -44,7 +44,8 @@ public class BidRepositoryImpl implements BidRepository {
 	public List<Bid> fetchAllBidsByApproveYes() {
 		try {
 			System.out.println("Bid Repo");
-			String jpql = "select b from Bid b join SellRequest s on s.status='unsold' where b.bidApprove='yes'";
+			String jpql = "select b from Bid b where b.requestId in "
+					+ "(select s.requestId from SellRequest s where s.status='unsold') and b.bidApprove='yes' ";
 			Query query = em.createQuery(jpql);
 			List<Bid> bids = query.getResultList(); 
 			for(Bid b : bids)
