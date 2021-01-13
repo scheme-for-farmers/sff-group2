@@ -27,12 +27,13 @@ public class InsuranceRepositoryImpl implements InsuranceRepository {
 
 	@Override
 	public Insurance findInsuranceByCrop(Crop crop) {
-		try {
-			Insurance insurance=crop.getInsurance();
-			return insurance;
-		} catch (Exception e) {
-			return null;
-		}
+//		try {
+//			Insurance insurance=crop.getInsurance();
+//			return insurance;
+//		} catch (Exception e) {
+//			return null;
+//		}
+		return null;
 	}
 
 }

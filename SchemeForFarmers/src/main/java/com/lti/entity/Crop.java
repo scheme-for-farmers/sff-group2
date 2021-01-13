@@ -84,9 +84,9 @@ public class Crop {
 		this.bid = bid;
 	}
 
-	public Insurance getInsurance() {
-		return insurance;
-	}
+//	public Insurance getInsurance() {
+//		return insurance;
+//	}
 
 	public void setInsurance(Insurance insurance) {
 		this.insurance = insurance;
