@@ -18,9 +18,9 @@ public class Insurance {
 	@SequenceGenerator(name="seq_insurance",initialValue=5000,allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_insurance")
 	long insuranceId;
-	double amount;
+	double premiumAmount;
+	double sumInsuredPerHectare;
 	String insuranceCompanyName;
-	
 	@OneToOne
 	@JoinColumn(name="cropId")
 	Crop crop;
@@ -36,12 +36,21 @@ public class Insurance {
 		this.insuranceId = insuranceId;
 	}
 
-	public double getAmount() {
-		return amount;
+	
+	public double getPremiumAmount() {
+		return premiumAmount;
 	}
 
-	public void setAmount(double amount) {
-		this.amount = amount;
+	public void setPremiumAmount(double premiumAmount) {
+		this.premiumAmount = premiumAmount;
+	}
+
+	public double getSumInsuredPerHectare() {
+		return sumInsuredPerHectare;
+	}
+
+	public void setSumInsuredPerHectare(double sumInsuredPerHectare) {
+		this.sumInsuredPerHectare = sumInsuredPerHectare;
 	}
 
 	public String getInsuranceCompanyName() {

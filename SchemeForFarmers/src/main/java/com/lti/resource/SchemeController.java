@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
+import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.dto.DisplayRequestDto;
 import com.lti.dto.DocumentDto;
+import com.lti.dto.InsuranceDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
@@ -24,6 +26,7 @@ import com.lti.entity.Admin;
 import com.lti.entity.Bidder;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
+import com.lti.entity.Insurance;
 import com.lti.service.AdminService;
 import com.lti.service.BidService;
 import com.lti.service.BidderService;
@@ -246,6 +249,20 @@ public class SchemeController {
 	public long addAdmin(@RequestBody Admin admin) {
 //		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
 		return adminService.addOrUpdateAdmin(admin);
+	}
+	
+	//--------------------------------------------insurance
+	
+	@RequestMapping(value = "/addInsurance", method = RequestMethod.POST)
+	public long addOrUpdateInsurance(@RequestBody InsuranceDto insuranceDto)
+	{
+		
+		return adminService.addOrUpdateInsurance(insuranceDto);
+	}
+	@RequestMapping(value = "/calculateInsurance", method = RequestMethod.POST)
+	public CalculateInsuranceDto calculate(String cropName,String cropType, double area)
+	{
+		return null;
 	}
 
 }

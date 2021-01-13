@@ -10,15 +10,20 @@ import org.springframework.stereotype.Service;
 import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
 import com.lti.dto.DisplayBidDto;
+import com.lti.dto.InsuranceDto;
 import com.lti.entity.Admin;
 import com.lti.entity.Bid;
 import com.lti.entity.Bidder;
+import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
+import com.lti.entity.Insurance;
 import com.lti.entity.SellRequest;
 import com.lti.repository.AdminRepository;
 import com.lti.repository.BidRepository;
 import com.lti.repository.BidderRepository;
+import com.lti.repository.CropRepository;
 import com.lti.repository.FarmerRepository;
+import com.lti.repository.InsuranceRepository;
 import com.lti.repository.SellRequestRepository;
 
 @Service
@@ -35,6 +40,11 @@ public class AdminServiceImpl implements AdminService {
 	BidRepository bidRepository;
 	@Autowired
 	EmailService emailService;
+	@Autowired
+	InsuranceRepository insuranceRepository;
+	@Autowired
+	CropRepository cropRepository;
+	
 
 	public long addOrUpdateAdmin(Admin admin) {
 		return adminRepository.addOrUpdateAdmin(admin);
@@ -259,5 +269,19 @@ public class AdminServiceImpl implements AdminService {
 			return admin.getAdminPassword();
 		} else
 			return null;
+	}
+	
+	public long addOrUpdateInsurance(InsuranceDto insuranceDto)
+	{
+		Insurance insurance=new Insurance();
+		Crop crop=cropRepository.findCropByCropNameAndCropType(insuranceDto.getCropName(), insuranceDto.getCropType());
+		insurance.setCrop(crop);
+		insurance.setInsuranceCompanyName(insuranceDto.getInsuranceCompanyName());
+		insurance.setPremiumAmount(insuranceDto.getPremiumAmount());
+		insurance.setSumInsuredPerHectare(insuranceDto.getSumInsuredPerHectare());
+		Insurance newInsur=insuranceRepository.addOrUpdateInsurance(insurance);
+		if(newInsur!=null)
+			return newInsur.getInsuranceId();
+		return 0;
 	}
 }
