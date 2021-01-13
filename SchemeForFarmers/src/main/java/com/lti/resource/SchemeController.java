@@ -181,6 +181,7 @@ public class SchemeController {
 
 	@RequestMapping(value = "/placeBid", method = RequestMethod.POST)
 	public long PlaceBidRequest(@RequestBody DisplayRequestDto displayRequestDto) {
+
 		return bidService.placeBid(displayRequestDto);
 	}
 
