@@ -78,19 +78,20 @@ public class FarmerServiceImpl implements FarmerService {
 			return "invalid";
 	}
 
-	public List<MarketPlaceDto> viewMarketPlace(String cropName, String cropType) {
+	public MarketPlaceDto viewMarketPlace(String cropName, String cropType) {
 		Crop crop = cropRepository.findCropByCropNameAndCropType(cropName, cropType);
-		List<MarketPlaceDto> marketplace = new ArrayList<MarketPlaceDto>();
-		if (crop != null) {
-			double currentBidAmount = bidRepository.findMaximumBidAmount(crop.getCropId());
-			List<Double> previousBids = bidRepository.previousBidsByCropId(crop.getCropId());
-			MarketPlaceDto mdto = new MarketPlaceDto();
-			mdto.setBasePrice(crop.getBasePrice());
+		MarketPlaceDto mdto = new MarketPlaceDto();
+		double basePrice = crop.getBasePrice();
+		double currentBidAmount = bidRepository.findMaximumBidAmount(crop.getCropId());
+		if(currentBidAmount>basePrice) {
 			mdto.setCurrentBidAmount(currentBidAmount);
-			mdto.setPreviousBids(previousBids);
-			marketplace.add(mdto);
 		}
-		return marketplace;
+		else
+			mdto.setCurrentBidAmount(basePrice);
+		List<Double> previousBids = bidRepository.previousBidsByCropId(crop.getCropId());
+		mdto.setBasePrice(crop.getBasePrice());
+		mdto.setPreviousBids(previousBids);
+		return mdto;
 	}
 
 	public List<SoldHistoryDto> viewSoldHistory(String farmerEmail) {

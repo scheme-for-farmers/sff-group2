@@ -148,7 +148,7 @@ public class SchemeController {
 	}
 
 	@RequestMapping(value = "/viewMarketPlace/{cName}/{cType}", method = RequestMethod.GET)
-	public List<MarketPlaceDto> viewMarketPlace(@PathVariable("cName") String cropName,
+	public MarketPlaceDto viewMarketPlace(@PathVariable("cName") String cropName,
 			@PathVariable("cType") String cropType) {
 		return farmerService.viewMarketPlace(cropName, cropType);
 	}

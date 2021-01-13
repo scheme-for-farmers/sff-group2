@@ -34,7 +34,13 @@ public class BidServiceImpl implements BidService {
 		List<DisplayRequestDto> appSellReqDto =new ArrayList<DisplayRequestDto>();
 		for(SellRequest s : sellRequests) {
 			DisplayRequestDto approval = new DisplayRequestDto();
-			approval.setCurrentBidAmount(bidRepository.findMaximumBidAmount(s.getCrop().getCropId()));
+			double basePrice = s.getCrop().getBasePrice();
+			double currentBidAmount = bidRepository.findMaximumBidAmount(s.getCrop().getCropId());
+			if(currentBidAmount>basePrice) {
+				approval.setCurrentBidAmount(currentBidAmount);
+			}
+			else
+				approval.setCurrentBidAmount(basePrice);
 			approval.setCropName(s.getCrop().getCropName());
 			approval.setCropType(s.getCrop().getCropType());
 			approval.setFarmerEmail(s.getFarmer().getFarmerEmail());
@@ -49,6 +55,7 @@ public class BidServiceImpl implements BidService {
 			Bidder bidder=bidderRepository.fetchBidderByEmailWithApproveYes(displayRequestDto.getBidderEmail());
 			Crop crop=cropRepository.findCropByCropNameAndCropType(displayRequestDto.getCropName(),displayRequestDto.getCropType());
 			double maxBidAmount=bidRepository.findMaximumBidAmount(crop.getCropId());
+			displayRequestDto.setCurrentBidAmount(crop.getBasePrice());
 			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestIdWithApproveYes(displayRequestDto.getRequestId());
 			if(displayRequestDto.getCurrentBidAmount()>maxBidAmount && bidder!=null && crop!=null && sellRequest!=null)
 			{
