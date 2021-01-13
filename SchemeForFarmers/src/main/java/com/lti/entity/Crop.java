@@ -32,12 +32,8 @@ public class Crop {
 	List<Bid> bid;
 	
 	@OneToOne(mappedBy="crop",cascade=CascadeType.ALL)
-	@JsonIgnore
+	//@JsonIgnore
 	Insurance insurance;
-	
-	@OneToOne(mappedBy="crop",cascade=CascadeType.ALL)
-	@JsonIgnore
-	ApplyInsurance applyInsurance;
 
 	public long getCropId() {
 		return CropId;
@@ -95,15 +91,6 @@ public class Crop {
 	public void setInsurance(Insurance insurance) {
 		this.insurance = insurance;
 	}
-
-	public ApplyInsurance getApplyInsurance() {
-		return applyInsurance;
-	}
-
-	public void setApplyInsurance(ApplyInsurance applyInsurance) {
-		this.applyInsurance = applyInsurance;
-	}
-	
 	
 	
 }
