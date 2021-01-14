@@ -107,4 +107,5 @@ public class InsuranceServiceImpl implements InsuranceService {
 		}
 		return 0;
 	}
+	
 }
