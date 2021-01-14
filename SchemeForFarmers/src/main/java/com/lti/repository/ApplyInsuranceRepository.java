@@ -12,4 +12,5 @@ public interface ApplyInsuranceRepository {
 	public long rejectInsuranceApproval(long policyNo);
 	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss);
 	public ApplyInsurance fetchInsuranceByPolicyNo(long policyNo);
+	public List<ApplyInsurance> fetchPendingclaimInsurance();
 }

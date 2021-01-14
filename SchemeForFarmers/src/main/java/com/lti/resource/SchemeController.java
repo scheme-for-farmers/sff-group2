@@ -62,13 +62,14 @@ public class SchemeController {
 
 	@RequestMapping(value = "/placeSellRequest", method = RequestMethod.POST)
 	public long placeSellRequest(@RequestBody SellRequestDto sellRequestDto) {
-		System.out.print(sellRequestDto.getCropName()+" "+sellRequestDto.getCropType()+" "+sellRequestDto.getFarmerEmail()+" "+sellRequestDto.getQuantity());
+		System.out.print(sellRequestDto.getCropName() + " " + sellRequestDto.getCropType() + " "
+				+ sellRequestDto.getFarmerEmail() + " " + sellRequestDto.getQuantity());
 		return sellRequestService.placeSellRequest(sellRequestDto);
 	}
 
 	@RequestMapping(value = "/registerUser", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long registerFarmer(@RequestBody Farmer farmer) {
-		System.out.println("hello" + farmer.getFarmerBank().getIfscCode()+" ");
+		System.out.println("hello" + farmer.getFarmerBank().getIfscCode() + " ");
 		return farmerService.registerFarmer(farmer);
 	}
 
@@ -76,9 +77,9 @@ public class SchemeController {
 	public long registerBidder(@RequestBody Bidder bidder) {
 		return bidderService.registerBidder(bidder);
 	}
-	
+
 //	http://localhost:8080/isVaild/svraj24@gmail.com/selvaraj!23
-	
+
 	@RequestMapping(value = "/isVaild/{email}/{password}", method = RequestMethod.GET)
 	public int isValidUser(@PathVariable("email") String Email, @PathVariable("password") String Password) {
 		System.out.println("hello");
@@ -103,12 +104,9 @@ public class SchemeController {
 				}
 			}
 		}
-		
-		
-		
+
 	}
-	
-	
+
 	@RequestMapping(value = "/addCrop", method = RequestMethod.POST)
 	public long addOrUpdateCrop(@RequestBody Crop crop) {
 //		{
@@ -119,12 +117,12 @@ public class SchemeController {
 		System.out.println(crop.getCropName());
 		return cropService.addOrUpdateCrop(crop);
 	}
-	
+
 	@RequestMapping(value = "/viewAllCrops", method = RequestMethod.GET)
-	public List<Crop> viewAllCrops(){
+	public List<Crop> viewAllCrops() {
 		return cropService.viewAllCrops();
 	}
-	
+
 	@RequestMapping(value = "/deleteCrop/{cId}", method = RequestMethod.GET)
 	public long deleteCrop(@PathVariable("cId") long cropId) {
 		return cropService.deleteCrop(cropId);
@@ -230,67 +228,73 @@ public class SchemeController {
 			}
 		}
 	}
-	
-	@RequestMapping(value="/uploadFarmerDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+
+	@RequestMapping(value = "/uploadFarmerDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 //	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-	public long uploadFarmerDocument(DocumentDto documentDto)
-	{
+	public long uploadFarmerDocument(DocumentDto documentDto) {
 		return farmerService.uploadDocument(documentDto);
 	}
-	
-	@RequestMapping(value="/uploadBidderDoc",method=RequestMethod.POST,consumes = { "multipart/form-data" })
+
+	@RequestMapping(value = "/uploadBidderDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 //	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto)
-	{
+	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto) {
 		return bidderService.uploadDocument(documentDto);
 	}
+
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long addAdmin(@RequestBody Admin admin) {
 //		System.out.println("hello" + farmer.getFarmerBank().getIFSC_code());
 		return adminService.addOrUpdateAdmin(admin);
 	}
-	
-	//--------------------------------------------insurance
-	
+
+	// --------------------------------------------insurance
+
 	@RequestMapping(value = "/addInsurance", method = RequestMethod.POST)
-	public long addOrUpdateInsurance(@RequestBody InsuranceDto insuranceDto)
-	{
-		
+	public long addOrUpdateInsurance(@RequestBody InsuranceDto insuranceDto) {
+
 		return adminService.addOrUpdateInsurance(insuranceDto);
 	}
+
 	@RequestMapping(value = "/calculateInsurance", method = RequestMethod.POST)
-	public CalculateInsuranceDto calculate(@RequestBody InsuranceInputDto inputDto)
-	{
+	public CalculateInsuranceDto calculate(@RequestBody InsuranceInputDto inputDto) {
 		return insuranceService.calculate(inputDto);
 	}
-	
+
 	@RequestMapping(value = "/applyInsurance", method = RequestMethod.POST)
 	public long applyInsurance(@RequestBody CalculateInsuranceDto calculateInsuranceDto) {
 		return insuranceService.applyInsurance(calculateInsuranceDto);
 	}
-	
+
 	@RequestMapping(value = "/fetchApprovalPendingInsurance", method = RequestMethod.GET)
 	public List<InsuranceApproval> fetchApprovalPendingInsurance() {
 		return adminService.fetchApprovalPendingInsurance();
 	}
+
 	@RequestMapping(value = "/approveInsurance/{iId}/{rId}", method = RequestMethod.GET)
-	public long approveInsurance(@PathVariable("iId") long policyNo,@PathVariable("rId") long requestId) {
-		return adminService.approveInsurance(policyNo,requestId);
+	public long approveInsurance(@PathVariable("iId") long policyNo, @PathVariable("rId") long requestId) {
+		return adminService.approveInsurance(policyNo, requestId);
 	}
-	
+
 	@RequestMapping(value = "/rejectInsurance/{rId}", method = RequestMethod.GET)
 	public long rejectInsurance(@PathVariable("rId") long policyNo) {
 		return adminService.rejectInsuranceApproval(policyNo);
 	}
+
 	@RequestMapping(value = "/viewUnsoldCrops", method = RequestMethod.GET)
-	public List<Crop> viewUnSoldCrops(){
+	public List<Crop> viewUnSoldCrops() {
 		return sellRequestService.viewUnsoldCrops();
 	}
+
 	@RequestMapping(value = "/claimInsurance/{pNo}/{cause}/{date}", method = RequestMethod.GET)
-	public long claimInsurance(@PathVariable("pNo") long policyNo,@PathVariable("cause") String causeOfClaim,@PathVariable("date") String dateOfLoss) {
+	public long claimInsurance(@PathVariable("pNo") long policyNo, @PathVariable("cause") String causeOfClaim,
+			@PathVariable("date") String dateOfLoss) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 		LocalDate fDate = LocalDate.parse(dateOfLoss, formatter);
-		return insuranceService.claimInsurance(policyNo,causeOfClaim,fDate);
+		return insuranceService.claimInsurance(policyNo, causeOfClaim, fDate);
 	}
-	
+
+	@RequestMapping(value = "/fetchApprovalPendingClaimInsurance", method = RequestMethod.GET)
+	public List<ApplyInsurance> fetchPendingClaimInsurance() {
+		return insuranceService.fetchPendingClaimInsurance();
+	}
 }

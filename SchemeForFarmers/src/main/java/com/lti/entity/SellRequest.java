@@ -104,7 +104,7 @@ public class SellRequest {
 	public void setSoldDate(LocalDate soldDate) {
 		this.soldDate = soldDate;
 	}
-
+	@JsonIgnore
 	public ApplyInsurance getApplyInsurance() {
 		return applyInsurance;
 	}

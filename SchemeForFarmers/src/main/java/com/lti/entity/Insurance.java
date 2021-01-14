@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Insurance {
 	@Id
@@ -60,7 +62,7 @@ public class Insurance {
 	public void setInsuranceCompanyName(String insuranceCompanyName) {
 		this.insuranceCompanyName = insuranceCompanyName;
 	}
-
+	
 	public Crop getCrop() {
 		return crop;
 	}

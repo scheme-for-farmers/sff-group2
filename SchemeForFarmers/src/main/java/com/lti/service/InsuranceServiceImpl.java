@@ -1,10 +1,10 @@
 package com.lti.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.InsuranceInputDto;
 import com.lti.entity.ApplyInsurance;
@@ -85,7 +85,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 				String subject = "Insurance Applied Successfully!!";
 				String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 				String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
-						"!! Your policyNo is " + applyInsurance.getPolicyNo()+" and waiting for approval";
+						"!! Your policyNo is " + policyNo+" and waiting for approval";
 				emailService.sendEmailForNewRegistration(email, text, subject);
 				System.out.println("Email sent successfully");
 			}
@@ -96,7 +96,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 	}
 	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss) {
 		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
-		if(applyInsurance!=null && dateOfLoss.compareTo(LocalDate.now())<0) {
+		if(applyInsurance!=null && dateOfLoss.compareTo(LocalDate.now())<0 && applyInsurance.getApprove().equalsIgnoreCase("yes")) {
 			String subject = "Insurance Claimed Successfully!!";
 			String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
@@ -107,5 +107,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 		}
 		return 0;
 	}
-	
+	public List<ApplyInsurance> fetchPendingClaimInsurance(){
+		return applyInsuranceRepository.fetchPendingclaimInsurance();
+	}
 }

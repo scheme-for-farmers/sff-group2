@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ApplyInsurance {
 	@Id
@@ -74,7 +76,7 @@ public class ApplyInsurance {
 	public void setApprove(String approve) {
 		this.approve = approve;
 	}
-
+	@JsonIgnore
 	public Insurance getInsurance() {
 		return insurance;
 	}

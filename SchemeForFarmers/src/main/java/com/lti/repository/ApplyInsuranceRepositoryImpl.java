@@ -87,4 +87,14 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 			return null;
 		}
 	}
+	@Transactional
+	public List<ApplyInsurance> fetchPendingclaimInsurance(){
+		try {
+			String jpql = "select a from ApplyInsurance a where a.insuranceStatus='notClaimed'";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
