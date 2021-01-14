@@ -1,9 +1,12 @@
 package com.lti.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.dto.SellRequestDto;
+import com.lti.dto.ViewUnsoldCrops;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.SellRequest;
@@ -52,5 +55,8 @@ public class SellRequestServiceImpl implements SellRequestService {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	public List<Crop> viewUnsoldCrops(){
+		return sellRequestRepository.viewUnsoldCrops();
 	}
 }

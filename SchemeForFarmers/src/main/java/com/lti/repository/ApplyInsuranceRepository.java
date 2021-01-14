@@ -1,9 +1,15 @@
 package com.lti.repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.lti.entity.ApplyInsurance;
 
 public interface ApplyInsuranceRepository {
 	public ApplyInsurance addApplyInsurance(ApplyInsurance applyInsurance);
-	public long updateInsuranceApproval(long policyNo);
+	public List<ApplyInsurance> pendingApprovalInsurance();
+	public long updateInsuranceApproval(long policyNo,long requestId);
 	public long rejectInsuranceApproval(long policyNo);
+	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss);
+	public ApplyInsurance fetchInsuranceByPolicyNo(long policyNo);
 }

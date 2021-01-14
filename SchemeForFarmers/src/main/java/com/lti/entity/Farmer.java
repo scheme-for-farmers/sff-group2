@@ -38,9 +38,6 @@ public class Farmer {
 	
 	@OneToOne(mappedBy="farmer",cascade=CascadeType.ALL)
 	FarmerLand farmerLand;
-	
-	@OneToMany(mappedBy="farmer",cascade=CascadeType.ALL,fetch = FetchType.EAGER)
-	List<ApplyInsurance> applyInsurance;
 
 	public long getFarmerId() {
 		return farmerId;
@@ -122,15 +119,6 @@ public class Farmer {
 	public void setFarmerLand(FarmerLand farmerLand) {
 		this.farmerLand = farmerLand;
 	}
-
-	public List<ApplyInsurance> getApplyInsurance() {
-		return applyInsurance;
-	}
-
-	public void setApplyInsurance(List<ApplyInsurance> applyInsurance) {
-		this.applyInsurance = applyInsurance;
-	}
-
 	public String getFarmerPan() {
 		return farmerPan;
 	}

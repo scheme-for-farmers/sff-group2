@@ -37,6 +37,9 @@ public class SellRequest {
 	@ManyToOne
 	@JoinColumn(name="bidId")
 	Bid bid;
+	
+	@OneToOne(mappedBy = "sellRequest",cascade = CascadeType.ALL)
+	ApplyInsurance applyInsurance;
 
 	public long getRequestId() {
 		return requestId;
@@ -101,5 +104,12 @@ public class SellRequest {
 	public void setSoldDate(LocalDate soldDate) {
 		this.soldDate = soldDate;
 	}
-	
+
+	public ApplyInsurance getApplyInsurance() {
+		return applyInsurance;
+	}
+
+	public void setApplyInsurance(ApplyInsurance applyInsurance) {
+		this.applyInsurance = applyInsurance;
+	}
 }

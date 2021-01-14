@@ -8,6 +8,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lti.entity.Crop;
 import com.lti.entity.SellRequest;
 
 @Repository
@@ -96,6 +98,16 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 		try {
 			SellRequest s=em.merge(sellRequest);
 			return s;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	@Transactional
+	public List<Crop> viewUnsoldCrops(){
+		try {
+			String jpql = "select s.crop from SellRequest s where s.status='unsold' and s.approve='yes'";
+			Query query = em.createQuery(jpql);
+			return query.getResultList();
 		} catch (Exception e) {
 			return null;
 		}

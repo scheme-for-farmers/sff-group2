@@ -18,21 +18,22 @@ public class ApplyInsurance {
 	@SequenceGenerator(name="seq_insuranceApplied",initialValue=6000,allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="seq_insuranceApplied")
 	long policyNo;
-//	LocalDate validFrom;
-//	LocalDate validTill;
 	double premiumAmount;
 	double area;
-	double sumInsured;
+	double totalsumInsured;
 	String approve;
 	String cropName;
+	String insuranceStatus;
+	String causeOfClaim;
+	LocalDate dateOfLoss;
 	
 	@ManyToOne
-	@JoinColumn(name="InsuranceId")
+	@JoinColumn(name="insuranceId")
 	Insurance insurance;
 	
-	@ManyToOne
-	@JoinColumn(name="farmerId")
-	Farmer farmer;
+	@OneToOne
+	@JoinColumn(name="requestId")
+	SellRequest sellRequest;
 
 	public long getPolicyNo() {
 		return policyNo;
@@ -58,12 +59,12 @@ public class ApplyInsurance {
 		this.area = area;
 	}
 
-	public double getSumInsured() {
-		return sumInsured;
+	public double getTotalsumInsured() {
+		return totalsumInsured;
 	}
 
-	public void setSumInsured(double sumInsured) {
-		this.sumInsured = sumInsured;
+	public void setTotalsumInsured(double totalsumInsured) {
+		this.totalsumInsured = totalsumInsured;
 	}
 
 	public String getApprove() {
@@ -81,13 +82,12 @@ public class ApplyInsurance {
 	public void setInsurance(Insurance insurance) {
 		this.insurance = insurance;
 	}
-
-	public Farmer getFarmer() {
-		return farmer;
+	public SellRequest getSellRequest() {
+		return sellRequest;
 	}
 
-	public void setFarmer(Farmer farmer) {
-		this.farmer = farmer;
+	public void setSellRequest(SellRequest sellRequest) {
+		this.sellRequest = sellRequest;
 	}
 
 	public String getCropName() {
@@ -96,6 +96,30 @@ public class ApplyInsurance {
 
 	public void setCropName(String cropName) {
 		this.cropName = cropName;
+	}
+
+	public String getInsuranceStatus() {
+		return insuranceStatus;
+	}
+
+	public void setInsuranceStatus(String insuranceStatus) {
+		this.insuranceStatus = insuranceStatus;
+	}
+
+	public String getCauseOfClaim() {
+		return causeOfClaim;
+	}
+
+	public void setCauseOfClaim(String causeOfClaim) {
+		this.causeOfClaim = causeOfClaim;
+	}
+
+	public LocalDate getDateOfLoss() {
+		return dateOfLoss;
+	}
+
+	public void setDateOfLoss(LocalDate dateOfLoss) {
+		this.dateOfLoss = dateOfLoss;
 	}
 
 }

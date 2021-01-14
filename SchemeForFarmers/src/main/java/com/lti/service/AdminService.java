@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
+import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.DisplayBidDto;
+import com.lti.dto.InsuranceApproval;
 import com.lti.dto.InsuranceDto;
 import com.lti.entity.Admin;
 import com.lti.entity.Bidder;
@@ -29,6 +31,7 @@ public interface AdminService {
     public long rejectBidder(String bidderEmail);
     public String forgotPassword(String adminEmail);
     public long addOrUpdateInsurance(InsuranceDto insuranceDto);
-    public long approveInsurance(long policyNo);
+    public List<InsuranceApproval> fetchApprovalPendingInsurance();
+    public long approveInsurance(long policyNo,long requestId);
     public long rejectInsuranceApproval(long policyNo);
 }

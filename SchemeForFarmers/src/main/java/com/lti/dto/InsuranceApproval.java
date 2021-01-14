@@ -1,6 +1,6 @@
 package com.lti.dto;
 
-public class CalculateInsuranceDto {
+public class InsuranceApproval {
 	String insuranceCompanyName;
 	double sumInsured;
 	double premiumAmount;
@@ -9,6 +9,7 @@ public class CalculateInsuranceDto {
 	double area;
 	double totalSumInsured;
 	long requestId;
+	String farmerEmail;
 	public String getInsuranceCompanyName() {
 		return insuranceCompanyName;
 	}
@@ -33,6 +34,12 @@ public class CalculateInsuranceDto {
 	public void setCropName(String cropName) {
 		this.cropName = cropName;
 	}
+	public String getCropType() {
+		return cropType;
+	}
+	public void setCropType(String cropType) {
+		this.cropType = cropType;
+	}
 	public double getArea() {
 		return area;
 	}
@@ -51,11 +58,11 @@ public class CalculateInsuranceDto {
 	public void setRequestId(long requestId) {
 		this.requestId = requestId;
 	}
-	public String getCropType() {
-		return cropType;
+	public String getFarmerEmail() {
+		return farmerEmail;
 	}
-	public void setCropType(String cropType) {
-		this.cropType = cropType;
+	public void setFarmerEmail(String farmerEmail) {
+		this.farmerEmail = farmerEmail;
 	}
 	
 }

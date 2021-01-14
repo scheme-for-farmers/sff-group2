@@ -1,17 +1,23 @@
 package com.lti.service;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lti.dto.CalculateInsuranceDto;
+import com.lti.dto.InsuranceInputDto;
 import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
+import com.lti.entity.SellRequest;
 import com.lti.repository.ApplyInsuranceRepository;
 import com.lti.repository.CropRepository;
 import com.lti.repository.FarmerRepository;
 import com.lti.repository.InsuranceRepository;
+import com.lti.repository.SellRequestRepository;
+
 @Service
 public class InsuranceServiceImpl implements InsuranceService {
 	@Autowired
@@ -22,54 +28,83 @@ public class InsuranceServiceImpl implements InsuranceService {
 	ApplyInsuranceRepository applyInsuranceRepository;
 	@Autowired
 	FarmerRepository farmerRepository;
+	@Autowired
+	SellRequestRepository sellRequestRepository;
+	@Autowired
+	EmailService emailService;
 	
 	@Override
-	public CalculateInsuranceDto calculate(String cropName, String cropType, double area) {
-		double premiumAmount=0;
+	public CalculateInsuranceDto calculate(InsuranceInputDto inputDto) {
 		try {
-			Crop crop=cropRepository.findCropByCropNameAndCropType(cropName, cropType);
+			double premiumAmount = 0;
+			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestId(inputDto.getRequestId());
+			Crop crop = sellRequest.getCrop();
+			Farmer farmer = sellRequest.getFarmer();
 			Insurance insurance = insuranceRepository.findInsuranceByCrop(crop);
 			CalculateInsuranceDto calulateInsurance = new CalculateInsuranceDto();
-			calulateInsurance.setArea(area);
+			calulateInsurance.setArea(inputDto.getArea());
+			calulateInsurance.setRequestId(inputDto.getRequestId());
 			calulateInsurance.setCropName(crop.getCropName());
 			calulateInsurance.setInsuranceCompanyName(insurance.getInsuranceCompanyName());
-			calulateInsurance.setCropType(cropType);
+			calulateInsurance.setCropType(crop.getCropType());
 			calulateInsurance.setSumInsured(insurance.getSumInsuredPerHectare());
-			if(crop.getCropType().equalsIgnoreCase("kharif")) {
-				premiumAmount = insurance.getSumInsuredPerHectare()*0.02*area;
+			if (crop.getCropType().equalsIgnoreCase("kharif")) {
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.02 * inputDto.getArea();
+				calulateInsurance.setPremiumAmount(premiumAmount);
+			} else if (crop.getCropType().equalsIgnoreCase("rabi")) {
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.15 * inputDto.getArea();
+				calulateInsurance.setPremiumAmount(premiumAmount);
+			} else {
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.05 * inputDto.getArea();
 				calulateInsurance.setPremiumAmount(premiumAmount);
 			}
-			else if(crop.getCropType().equalsIgnoreCase("rabi")) {
-				premiumAmount = insurance.getSumInsuredPerHectare()*0.15*area;
-				calulateInsurance.setPremiumAmount(premiumAmount);
-			}
-			else {
-				premiumAmount = insurance.getSumInsuredPerHectare()*0.05*area;
-				calulateInsurance.setPremiumAmount(premiumAmount);
-			}
-			calulateInsurance.setTotalSumInsured(area*insurance.getSumInsuredPerHectare());
+			calulateInsurance.setTotalSumInsured(inputDto.getArea() * insurance.getSumInsuredPerHectare());
 			return calulateInsurance;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	public long applyInsurance(CalculateInsuranceDto calculateInsuranceDto) {
 		try {
 			ApplyInsurance applyInsurance = new ApplyInsurance();
-			Farmer farmer = farmerRepository.fetchFarmerByEmail(calculateInsuranceDto.getFarmerEmail());
-			applyInsurance.setFarmer(farmer);
+			SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestId(calculateInsuranceDto.getRequestId());
+			applyInsurance.setSellRequest(sellRequest);
 			applyInsurance.setApprove("no");
+			applyInsurance.setInsuranceStatus("notClaimed");
 			applyInsurance.setArea(calculateInsuranceDto.getArea());
-			Crop crop = cropRepository.findCropByCropNameAndCropType(calculateInsuranceDto.getCropName(), calculateInsuranceDto.getCropType());
+			Crop crop = cropRepository.findCropByCropNameAndCropType(calculateInsuranceDto.getCropName(),
+					calculateInsuranceDto.getCropType());
 			Insurance insurance = insuranceRepository.findInsuranceByCrop(crop);
 			applyInsurance.setInsurance(insurance);
 			applyInsurance.setCropName(calculateInsuranceDto.getCropName());
 			applyInsurance.setPremiumAmount(calculateInsuranceDto.getPremiumAmount());
-			applyInsurance.setSumInsured(calculateInsuranceDto.getSumInsured());
-			return applyInsuranceRepository.addApplyInsurance(applyInsurance).getPolicyNo();
+			applyInsurance.setTotalsumInsured(calculateInsuranceDto.getTotalSumInsured());
+			long policyNo = applyInsuranceRepository.addApplyInsurance(applyInsurance).getPolicyNo();
+			if(policyNo>0) {
+				String subject = "Insurance Applied Successfully!!";
+				String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
+				String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
+						"!! Your policyNo is " + applyInsurance.getPolicyNo()+" and waiting for approval";
+				emailService.sendEmailForNewRegistration(email, text, subject);
+				System.out.println("Email sent successfully");
+			}
+			return policyNo;
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss) {
+		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
+		if(applyInsurance!=null && dateOfLoss.compareTo(LocalDate.now())<0) {
+			String subject = "Insurance Claimed Successfully!!";
+			String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
+			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
+					"!! Your policyNo is " + applyInsurance.getPolicyNo()+" and waiting for approval";
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
+			return applyInsuranceRepository.claimInsurance(policyNo,causeOfClaim,dateOfLoss);
+		}
+		return 0;
 	}
 }

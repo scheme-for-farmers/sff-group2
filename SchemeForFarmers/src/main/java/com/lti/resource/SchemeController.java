@@ -1,5 +1,7 @@
 package com.lti.resource;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,10 +20,13 @@ import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.DisplayBidDto;
 import com.lti.dto.DisplayRequestDto;
 import com.lti.dto.DocumentDto;
+import com.lti.dto.InsuranceApproval;
 import com.lti.dto.InsuranceDto;
+import com.lti.dto.InsuranceInputDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SellRequestDto;
 import com.lti.dto.SoldHistoryDto;
+import com.lti.dto.ViewUnsoldCrops;
 import com.lti.entity.Admin;
 import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Bidder;
@@ -207,16 +212,6 @@ public class SchemeController {
 		return cropService.findCropById(cropId);
 	}
 
-//	@RequestMapping(value = "/pendingBidRequest", method = RequestMethod.GET)
-//	public List<ApprovalBidDto> fetchApprovalPendingBids() {
-//		return adminService.fetchApprovalPendingBids();
-//	}
-//
-//	@RequestMapping(value = "/approveBidRequest/{bId}", method = RequestMethod.GET)
-//	public long approveBidRequest(@PathVariable("bId") long bidId) {
-//		return adminService.approveBid(bidId);
-//	}
-
 	@GetMapping(value = "/forgotPassword/{email}")
 	public int forgotPassword(@PathVariable("email") String Email) {
 		String s = farmerService.forgotPassword(Email);
@@ -263,10 +258,10 @@ public class SchemeController {
 		
 		return adminService.addOrUpdateInsurance(insuranceDto);
 	}
-	@RequestMapping(value = "/calculateInsurance/{cName}/{cType}/{area}", method = RequestMethod.GET)
-	public CalculateInsuranceDto calculate(@PathVariable("cName") String cropName,@PathVariable("cType") String cropType, @PathVariable("area") double area)
+	@RequestMapping(value = "/calculateInsurance", method = RequestMethod.POST)
+	public CalculateInsuranceDto calculate(@RequestBody InsuranceInputDto inputDto)
 	{
-		return insuranceService.calculate(cropName, cropType, area);
+		return insuranceService.calculate(inputDto);
 	}
 	
 	@RequestMapping(value = "/applyInsurance", method = RequestMethod.POST)
@@ -274,13 +269,28 @@ public class SchemeController {
 		return insuranceService.applyInsurance(calculateInsuranceDto);
 	}
 	
-	@RequestMapping(value = "/approveInsurance/{rId}", method = RequestMethod.GET)
-	public long approveInsurance(@PathVariable("rId") long insuranceId) {
-		return adminService.approveInsurance(insuranceId);
+	@RequestMapping(value = "/fetchApprovalPendingInsurance", method = RequestMethod.GET)
+	public List<InsuranceApproval> fetchApprovalPendingInsurance() {
+		return adminService.fetchApprovalPendingInsurance();
+	}
+	@RequestMapping(value = "/approveInsurance/{iId}/{rId}", method = RequestMethod.GET)
+	public long approveInsurance(@PathVariable("iId") long policyNo,@PathVariable("rId") long requestId) {
+		return adminService.approveInsurance(policyNo,requestId);
 	}
 	
 	@RequestMapping(value = "/rejectInsurance/{rId}", method = RequestMethod.GET)
 	public long rejectInsurance(@PathVariable("rId") long policyNo) {
 		return adminService.rejectInsuranceApproval(policyNo);
 	}
+	@RequestMapping(value = "/viewUnsoldCrops", method = RequestMethod.GET)
+	public List<Crop> viewUnSoldCrops(){
+		return sellRequestService.viewUnsoldCrops();
+	}
+	@RequestMapping(value = "/claimInsurance/{pNo}/{cause}/{date}", method = RequestMethod.GET)
+	public long claimInsurance(@PathVariable("pNo") long policyNo,@PathVariable("cause") String causeOfClaim,@PathVariable("date") String dateOfLoss) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+		LocalDate fDate = LocalDate.parse(dateOfLoss, formatter);
+		return insuranceService.claimInsurance(policyNo,causeOfClaim,fDate);
+	}
+	
 }

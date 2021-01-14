@@ -4,11 +4,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
-
 import com.lti.dto.DocumentDto;
 import com.lti.dto.MarketPlaceDto;
 import com.lti.dto.SoldHistoryDto;
@@ -16,7 +14,6 @@ import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.SellRequest;
 import com.lti.repository.BidRepository;
-import com.lti.repository.BidderRepository;
 import com.lti.repository.CropRepository;
 import com.lti.repository.FarmerRepository;
 import com.lti.repository.SellRequestRepository;
@@ -91,6 +88,8 @@ public class FarmerServiceImpl implements FarmerService {
 		List<Double> previousBids = bidRepository.previousBidsByCropId(crop.getCropId());
 		mdto.setBasePrice(crop.getBasePrice());
 		mdto.setPreviousBids(previousBids);
+		mdto.setCropName(cropName);
+		mdto.setCropType(cropType);
 		return mdto;
 	}
 

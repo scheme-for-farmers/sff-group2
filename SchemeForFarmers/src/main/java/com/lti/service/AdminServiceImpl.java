@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
+import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.DisplayBidDto;
+import com.lti.dto.InsuranceApproval;
 import com.lti.dto.InsuranceDto;
 import com.lti.entity.Admin;
+import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Bid;
 import com.lti.entity.Bidder;
 import com.lti.entity.Crop;
@@ -163,38 +166,6 @@ public class AdminServiceImpl implements AdminService {
 		return 0;
 	}
 
-//	public List<ApprovalBidDto> fetchApprovalPendingBids() {
-//		List<Bid> bids = bidRepository.fetchBidsByBidApproveNo();
-//		List<ApprovalBidDto> appBidDto = new ArrayList<ApprovalBidDto>();
-//		for (Bid b : bids) {
-//			ApprovalBidDto appDto = new ApprovalBidDto();
-//			appDto.setBidId(b.getBidId());
-//			appDto.setBidderEmail(b.getBidder().getBidderEmail());
-//			appDto.setCropName(b.getCrop().getCropName());
-//			appDto.setCropType(b.getCrop().getCropType());
-//			appDto.setCurrentBidAmount(b.getBidAmount());//
-//			appDto.setRequestId(b.getRequestId());
-//			appBidDto.add(appDto);
-//		}
-//		return appBidDto;
-//	}
-
-//	public long approveBid(long bidId) {
-//		Bid bid = bidRepository.updateBidBybidId(bidId);
-//		if (bid != null) {
-//			if (bid.getBidId() > 0) {
-//				String subject = "BidRequest approved!! ";
-//				String email = bid.getBidder().getBidderEmail();
-//				String text = "Hi " + bid.getBidder().getBidderName() + "!! Your bidRequest for "
-//						+ bid.getCrop().getCropName() + " is approved ";
-//				emailService.sendEmailForNewRegistration(email, text, subject);
-//				System.out.println("Email sent successfully");
-//			}
-//			return bid.getBidId();
-//		} else
-//			return 0;
-//	}
-
 	public List<Farmer> fetchApprovalPendingFarmers() {
 		return farmerRepository.fetchApprovalPendingFarmers();
 	}
@@ -290,11 +261,36 @@ public class AdminServiceImpl implements AdminService {
 			return newInsur.getInsuranceId();
 		return 0;
 	}
-	public long approveInsurance(long policyNo) {
-		return applyInsuranceRepository.updateInsuranceApproval(policyNo);
+	
+	public List<InsuranceApproval> fetchApprovalPendingInsurance(){
+		try {
+			System.out.println("service");
+			List<ApplyInsurance> applyInsurance =  	applyInsuranceRepository.pendingApprovalInsurance();
+			List<InsuranceApproval> calList = new ArrayList<InsuranceApproval>();
+			for(ApplyInsurance a : applyInsurance) {
+				InsuranceApproval calDto = new InsuranceApproval();
+				calDto.setArea(a.getArea());
+				calDto.setCropName(a.getCropName());
+				calDto.setInsuranceCompanyName(a.getInsurance().getInsuranceCompanyName());
+				calDto.setPremiumAmount(a.getPremiumAmount());
+				calDto.setTotalSumInsured(a.getTotalsumInsured());
+				calDto.setSumInsured(a.getInsurance().getSumInsuredPerHectare());
+				calDto.setRequestId(a.getSellRequest().getRequestId());
+				calDto.setFarmerEmail(a.getSellRequest().getFarmer().getFarmerEmail());
+				calList.add(calDto);
+			}
+			return calList;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public long approveInsurance(long policyNo,long requestId) {
+		return applyInsuranceRepository.updateInsuranceApproval(policyNo,requestId);
 	}
 	
 	public long rejectInsuranceApproval(long policyNo) {
 		return applyInsuranceRepository.rejectInsuranceApproval(policyNo);
 	}
+	
 }
