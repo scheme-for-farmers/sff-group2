@@ -19,8 +19,8 @@ public interface AdminService {
 	public long rejectSellRequestApproval(long requestId);
 	public List<DisplayBidDto> viewBid();
 	public int sellCropToBidder(long bidId);
-	public List<ApprovalBidDto> fetchApprovalPendingBids();
-	public long approveBid(long bidId);
+	//public List<ApprovalBidDto> fetchApprovalPendingBids();
+	//public long approveBid(long bidId);
 	public List<Farmer> fetchApprovalPendingFarmers();
     public long approveFarmer(String farmerEmail);
     public List<Bidder> fetchApprovalPendingBidders();

@@ -82,7 +82,7 @@ public class BidServiceImpl implements BidService {
             		Bid bid = new Bid();
                     bid.setBidAmount(displayRequestDto.getCurrentBidAmount());
                     bid.setBidDate(LocalDate.now());
-                    bid.setBidApprove("no");
+                    //bid.setBidApprove("no");
                     bid.setRequestId(displayRequestDto.getRequestId());
                     bid.setBidder(bidder);
                     bid.setCrop(crop);

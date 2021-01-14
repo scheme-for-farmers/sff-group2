@@ -163,37 +163,37 @@ public class AdminServiceImpl implements AdminService {
 		return 0;
 	}
 
-	public List<ApprovalBidDto> fetchApprovalPendingBids() {
-		List<Bid> bids = bidRepository.fetchBidsByBidApproveNo();
-		List<ApprovalBidDto> appBidDto = new ArrayList<ApprovalBidDto>();
-		for (Bid b : bids) {
-			ApprovalBidDto appDto = new ApprovalBidDto();
-			appDto.setBidId(b.getBidId());
-			appDto.setBidderEmail(b.getBidder().getBidderEmail());
-			appDto.setCropName(b.getCrop().getCropName());
-			appDto.setCropType(b.getCrop().getCropType());
-			appDto.setCurrentBidAmount(b.getBidAmount());//
-			appDto.setRequestId(b.getRequestId());
-			appBidDto.add(appDto);
-		}
-		return appBidDto;
-	}
+//	public List<ApprovalBidDto> fetchApprovalPendingBids() {
+//		List<Bid> bids = bidRepository.fetchBidsByBidApproveNo();
+//		List<ApprovalBidDto> appBidDto = new ArrayList<ApprovalBidDto>();
+//		for (Bid b : bids) {
+//			ApprovalBidDto appDto = new ApprovalBidDto();
+//			appDto.setBidId(b.getBidId());
+//			appDto.setBidderEmail(b.getBidder().getBidderEmail());
+//			appDto.setCropName(b.getCrop().getCropName());
+//			appDto.setCropType(b.getCrop().getCropType());
+//			appDto.setCurrentBidAmount(b.getBidAmount());//
+//			appDto.setRequestId(b.getRequestId());
+//			appBidDto.add(appDto);
+//		}
+//		return appBidDto;
+//	}
 
-	public long approveBid(long bidId) {
-		Bid bid = bidRepository.updateBidBybidId(bidId);
-		if (bid != null) {
-			if (bid.getBidId() > 0) {
-				String subject = "BidRequest approved!! ";
-				String email = bid.getBidder().getBidderEmail();
-				String text = "Hi " + bid.getBidder().getBidderName() + "!! Your bidRequest for "
-						+ bid.getCrop().getCropName() + " is approved ";
-				emailService.sendEmailForNewRegistration(email, text, subject);
-				System.out.println("Email sent successfully");
-			}
-			return bid.getBidId();
-		} else
-			return 0;
-	}
+//	public long approveBid(long bidId) {
+//		Bid bid = bidRepository.updateBidBybidId(bidId);
+//		if (bid != null) {
+//			if (bid.getBidId() > 0) {
+//				String subject = "BidRequest approved!! ";
+//				String email = bid.getBidder().getBidderEmail();
+//				String text = "Hi " + bid.getBidder().getBidderName() + "!! Your bidRequest for "
+//						+ bid.getCrop().getCropName() + " is approved ";
+//				emailService.sendEmailForNewRegistration(email, text, subject);
+//				System.out.println("Email sent successfully");
+//			}
+//			return bid.getBidId();
+//		} else
+//			return 0;
+//	}
 
 	public List<Farmer> fetchApprovalPendingFarmers() {
 		return farmerRepository.fetchApprovalPendingFarmers();

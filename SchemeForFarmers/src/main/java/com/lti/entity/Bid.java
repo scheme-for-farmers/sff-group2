@@ -25,7 +25,7 @@ public class Bid {
 	long bidId;
 	double bidAmount;
 	LocalDate bidDate;
-	String bidApprove;
+	//String bidApprove;
 	long requestId;
 	
 	@ManyToOne
@@ -59,12 +59,12 @@ public class Bid {
 	public void setBidDate(LocalDate bidDate) {
 		this.bidDate = bidDate;
 	}
-	public String getBidApprove() {
-		return bidApprove;
-	}
-	public void setBidApprove(String bidApprove) {
-		this.bidApprove = bidApprove;
-	}
+//	public String getBidApprove() {
+//		return bidApprove;
+//	}
+//	public void setBidApprove(String bidApprove) {
+//		this.bidApprove = bidApprove;
+//	}
 	public Crop getCrop() {
 		return crop;
 	}

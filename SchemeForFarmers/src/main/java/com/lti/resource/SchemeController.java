@@ -207,15 +207,15 @@ public class SchemeController {
 		return cropService.findCropById(cropId);
 	}
 
-	@RequestMapping(value = "/pendingBidRequest", method = RequestMethod.GET)
-	public List<ApprovalBidDto> fetchApprovalPendingBids() {
-		return adminService.fetchApprovalPendingBids();
-	}
-
-	@RequestMapping(value = "/approveBidRequest/{bId}", method = RequestMethod.GET)
-	public long approveBidRequest(@PathVariable("bId") long bidId) {
-		return adminService.approveBid(bidId);
-	}
+//	@RequestMapping(value = "/pendingBidRequest", method = RequestMethod.GET)
+//	public List<ApprovalBidDto> fetchApprovalPendingBids() {
+//		return adminService.fetchApprovalPendingBids();
+//	}
+//
+//	@RequestMapping(value = "/approveBidRequest/{bId}", method = RequestMethod.GET)
+//	public long approveBidRequest(@PathVariable("bId") long bidId) {
+//		return adminService.approveBid(bidId);
+//	}
 
 	@GetMapping(value = "/forgotPassword/{email}")
 	public int forgotPassword(@PathVariable("email") String Email) {

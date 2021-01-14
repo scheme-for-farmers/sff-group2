@@ -23,7 +23,7 @@ public class BidRepositoryImpl implements BidRepository {
 	@Transactional
 	public double findMaximumBidAmountByRequestId(long cropId,long requestId) {
 		try {
-			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and bidApprove='yes' and b.requestId=:rId";
+			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and b.requestId=:rId";
 			Query query = em.createQuery(jpql);
 			query.setParameter("cId", cropId);
 			query.setParameter("rId", requestId);
@@ -36,7 +36,7 @@ public class BidRepositoryImpl implements BidRepository {
 	@Transactional
 	public double findMaximumBidAmount(long cropId) {
 		try {
-			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId and bidApprove='yes' ";
+			String jpql = "select max(b.bidAmount) from Bid b where b.crop.CropId=:cId";
 			Query query = em.createQuery(jpql);
 			query.setParameter("cId", cropId);
 			double maxBidAmount = (Double) query.getSingleResult();
@@ -59,7 +59,7 @@ public class BidRepositoryImpl implements BidRepository {
 		try {
 			System.out.println("Bid Repo");
 			String jpql = "select b from Bid b where b.requestId in "
-					+ "(select s.requestId from SellRequest s where s.status='unsold') and b.bidApprove='yes' ";
+					+ "(select s.requestId from SellRequest s where s.status='unsold') ";
 			Query query = em.createQuery(jpql);
 			List<Bid> bids = query.getResultList(); 
 			for(Bid b : bids)
@@ -77,21 +77,21 @@ public class BidRepositoryImpl implements BidRepository {
 		Bid bid=(Bid)query.getSingleResult();
 		return bid;
 	}
-	@Transactional
-	public Bid updateBidBybidId(long bidId) {
-		String jpql = "update Bid b set b.bidApprove='yes' where b.bidId=:bId";
-		Query query = em.createQuery(jpql);
-		query.setParameter("bId", bidId);
-		query.executeUpdate();
-		Bid bid = fetchBidByBidId(bidId);
-		return bid;
-	}
+//	@Transactional
+//	public Bid updateBidBybidId(long bidId) {
+//		String jpql = "update Bid b set b.bidApprove='yes' where b.bidId=:bId";
+//		Query query = em.createQuery(jpql);
+//		query.setParameter("bId", bidId);
+//		query.executeUpdate();
+//		Bid bid = fetchBidByBidId(bidId);
+//		return bid;
+//	}
 	
 	@Transactional
 	public List<Bid> fetchBidsByBidApproveNo() {
 		try {
 			String jpql = "select b from Bid b where b.requestId in "
-					+ "(select s.requestId from SellRequest s where s.status='unsold') and b.bidApprove='no' ";
+					+ "(select s.requestId from SellRequest s where s.status='unsold')";
 			Query query = em.createQuery(jpql);
 			return query.getResultList();
 		} catch (Exception e) {
