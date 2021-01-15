@@ -85,7 +85,9 @@ public class InsuranceServiceImpl implements InsuranceService {
 				String subject = "Insurance Applied Successfully!!";
 				String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 				String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
-						"!! Your policyNo is " + policyNo+" and waiting for approval";
+				"!! Your policyNo is " + policyNo+ "Premium Amount Rs "+ calculateInsuranceDto.getPremiumAmount()
+				+ " is debited from your registered bank account and waiting for approval"
+				+ "In case of any damage Rs" + calculateInsuranceDto.getTotalSumInsured() + "will be credited to your bank account!!";
 				emailService.sendEmailForNewRegistration(email, text, subject);
 				System.out.println("Email sent successfully");
 			}

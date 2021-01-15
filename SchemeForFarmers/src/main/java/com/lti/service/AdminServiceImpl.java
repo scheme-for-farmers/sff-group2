@@ -307,7 +307,9 @@ public class AdminServiceImpl implements AdminService {
 			String subject = "Insurance Rejected!!";
 			String email = applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()
-					+ "!! Your insurance with policy No " + policyNo + " is rejected";
+					+ "!! Sorry! Your insurance with policy No " + policyNo + " is rejected"
+					+ "Your premium Amount Rs " + applyInsurance.getPremiumAmount()
+					+"is credited to your registered bank account!";
 			emailService.sendEmailForNewRegistration(email, text, subject);
 			System.out.println("Email sent successfully");
 		}
