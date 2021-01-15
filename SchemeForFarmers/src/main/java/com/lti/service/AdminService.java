@@ -34,4 +34,6 @@ public interface AdminService {
     public List<InsuranceApproval> fetchApprovalPendingInsurance();
     public long approveInsurance(long policyNo,long requestId);
     public long rejectInsuranceApproval(long policyNo);
+    public long approveClaimInsurance(long policyNo);
+    public long rejectClaimInsurance(long policyNo);
 }

@@ -288,7 +288,7 @@ public class SchemeController {
 	@RequestMapping(value = "/claimInsurance/{pNo}/{cause}/{date}", method = RequestMethod.GET)
 	public long claimInsurance(@PathVariable("pNo") long policyNo, @PathVariable("cause") String causeOfClaim,
 			@PathVariable("date") String dateOfLoss) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 		LocalDate fDate = LocalDate.parse(dateOfLoss, formatter);
 		return insuranceService.claimInsurance(policyNo, causeOfClaim, fDate);
 	}
@@ -297,4 +297,13 @@ public class SchemeController {
 	public List<ApplyInsurance> fetchPendingClaimInsurance() {
 		return insuranceService.fetchPendingClaimInsurance();
 	}
-}
+	
+	@RequestMapping(value = "/approveClaimedInsurance/{pNo}", method = RequestMethod.GET)
+	public long approveClaimInsurance(@PathVariable("pNo") long policyNo) {
+		return adminService.approveClaimInsurance(policyNo);
+	}
+	@RequestMapping(value = "/rejectClaimedInsurance/{pNo}", method = RequestMethod.GET)
+	public long rejectClaimInsurance(@PathVariable("pNo") long policyNo) {
+		return adminService.rejectClaimInsurance(policyNo);
+	}
+}	

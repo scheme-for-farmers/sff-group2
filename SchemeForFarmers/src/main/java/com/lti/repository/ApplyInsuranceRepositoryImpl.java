@@ -105,4 +105,31 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 			return null;
 		}
 	}
+	
+	@Transactional
+	public long approveclaimInsurance(long policyNo) {
+		try {
+			String jpql = "update ApplyInsurance a set a.insuranceStatus='claimed' where a.policyNo=:pNo";
+			Query query = em.createQuery(jpql);
+			query.setParameter("pNo",policyNo);
+			int rows = query.executeUpdate();
+			return rows;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	@Override
+	@Transactional
+	public long rejectclaimInsurance(long policyNo) {
+		try {
+			String jpql = "delete from ApplyInsurance a where a.policyNo=:pNo";
+			Query query = em.createQuery(jpql);
+			query.setParameter("pNo",policyNo);
+			int rows = query.executeUpdate();
+			return rows;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 }
