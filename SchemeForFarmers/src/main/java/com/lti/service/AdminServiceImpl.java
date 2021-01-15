@@ -51,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
 	CropRepository cropRepository;
 	@Autowired
 	ApplyInsuranceRepository applyInsuranceRepository;
-	
+
 	public long addOrUpdateAdmin(Admin admin) {
 		return adminRepository.addOrUpdateAdmin(admin);
 	}
@@ -98,7 +98,7 @@ public class AdminServiceImpl implements AdminService {
 
 	public long rejectSellRequestApproval(long requestId) {
 		SellRequest sellRequest = sellRequestRepository.removeSellRequestByRequestId(requestId);
-		System.out.println("id: "+sellRequest.getRequestId());
+		System.out.println("id: " + sellRequest.getRequestId());
 		if (sellRequest != null) {
 			if (sellRequest.getRequestId() > 0) {
 				String subject = "Oops:-( SellRequest Rejected ";
@@ -117,7 +117,7 @@ public class AdminServiceImpl implements AdminService {
 		List<Bid> bids = bidRepository.fetchAllBidsByApproveYes();
 		List<DisplayBidDto> displayBidDto = new ArrayList<DisplayBidDto>();
 		for (Bid b : bids) {
-			SellRequest s=sellRequestRepository.fetchSellRequestByRequestId(b.getRequestId());
+			SellRequest s = sellRequestRepository.fetchSellRequestByRequestId(b.getRequestId());
 			DisplayBidDto disDto = new DisplayBidDto();
 			disDto.setBidAmount(b.getBidAmount());
 			disDto.setBidDate(b.getBidDate());
@@ -137,7 +137,7 @@ public class AdminServiceImpl implements AdminService {
 		long requestId = bid.getRequestId();
 		SellRequest newSellRequest = new SellRequest();
 		SellRequest sellRequest = sellRequestRepository.fetchSellRequestByRequestIdWithApproveYes(requestId);
-		if (sellRequest != null && bid!=null) {
+		if (sellRequest != null && bid != null) {
 			sellRequest.setStatus("sold");
 			sellRequest.setBid(bid);
 			sellRequest.setSoldDate(LocalDate.now());
@@ -239,7 +239,7 @@ public class AdminServiceImpl implements AdminService {
 		Admin admin = adminRepository.fetchAdminByEmail(adminEmail);
 		if (admin != null) {
 			String subject = "Password Recovery";
-			String email =admin.getAdminEmail();
+			String email = admin.getAdminEmail();
 			String text = "Hi !! Your password is " + admin.getAdminPassword();
 			emailService.sendEmailForNewRegistration(email, text, subject);
 			System.out.println("Email sent successfully");
@@ -247,29 +247,30 @@ public class AdminServiceImpl implements AdminService {
 		} else
 			return null;
 	}
-	
-	public long addOrUpdateInsurance(InsuranceDto insuranceDto)
-	{
-		Insurance insurance=new Insurance();
-		Crop crop=cropRepository.findCropByCropNameAndCropType(insuranceDto.getCropName(), insuranceDto.getCropType());
+
+	public long addOrUpdateInsurance(InsuranceDto insuranceDto) {
+		Insurance insurance = new Insurance();
+		Crop crop = cropRepository.findCropByCropNameAndCropType(insuranceDto.getCropName(),
+				insuranceDto.getCropType());
 		insurance.setCrop(crop);
 		insurance.setInsuranceCompanyName(insuranceDto.getInsuranceCompanyName());
 		insurance.setPremiumAmount(insuranceDto.getPremiumAmount());
 		insurance.setSumInsuredPerHectare(insuranceDto.getSumInsuredPerHectare());
-		Insurance newInsur=insuranceRepository.addOrUpdateInsurance(insurance);
-		if(newInsur!=null)
+		Insurance newInsur = insuranceRepository.addOrUpdateInsurance(insurance);
+		if (newInsur != null)
 			return newInsur.getInsuranceId();
 		return 0;
 	}
-	
-	public List<InsuranceApproval> fetchApprovalPendingInsurance(){
+
+	public List<InsuranceApproval> fetchApprovalPendingInsurance() {
 		try {
 			System.out.println("service");
-			List<ApplyInsurance> applyInsurance =  	applyInsuranceRepository.pendingApprovalInsurance();
+			List<ApplyInsurance> applyInsurance = applyInsuranceRepository.pendingApprovalInsurance();
 			List<InsuranceApproval> calList = new ArrayList<InsuranceApproval>();
-			for(ApplyInsurance a : applyInsurance) {
+			for (ApplyInsurance a : applyInsurance) {
 				InsuranceApproval calDto = new InsuranceApproval();
 				calDto.setArea(a.getArea());
+				calDto.setPolicyNo(a.getPolicyNo());
 				calDto.setCropName(a.getCropName());
 				calDto.setInsuranceCompanyName(a.getInsurance().getInsuranceCompanyName());
 				calDto.setPremiumAmount(a.getPremiumAmount());
@@ -284,13 +285,32 @@ public class AdminServiceImpl implements AdminService {
 			return null;
 		}
 	}
-	
-	public long approveInsurance(long policyNo,long requestId) {
-		return applyInsuranceRepository.updateInsuranceApproval(policyNo,requestId);
+
+	public long approveInsurance(long policyNo, long requestId) {
+		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
+		long result = applyInsuranceRepository.updateInsuranceApproval(policyNo, requestId);
+		if (result > 0) {
+			String subject = "Insurance Approved Successfully!!";
+			String email = applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
+			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()
+					+ "!! Your insurance with policy No " + policyNo + " is approved";
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
+		}
+		return result;
 	}
-	
+
 	public long rejectInsuranceApproval(long policyNo) {
-		return applyInsuranceRepository.rejectInsuranceApproval(policyNo);
+		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
+		long result = applyInsuranceRepository.rejectInsuranceApproval(policyNo);
+		if (result > 0) {
+			String subject = "Insurance Rejected!!";
+			String email = applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
+			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()
+					+ "!! Your insurance with policy No " + policyNo + " is rejected";
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
+		}
+		return result;
 	}
-	
 }

@@ -31,13 +31,17 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 	@Override
 	@Transactional
 	public long updateInsuranceApproval(long policyNo,long requestId) {
-			String jpql = "update ApplyInsurance a set a.approve='yes' where a.policyNo=:pNo "
-					+ "and a.sellRequest.requestId in (select s.requestId from SellRequest s where s.requestId=:rId and s.approve='yes')";
-			Query query = em.createQuery(jpql);
-			query.setParameter("pNo",policyNo);
-			query.setParameter("rId",requestId);
-			query.executeUpdate();
-			return policyNo;
+			try {
+				String jpql = "update ApplyInsurance a set a.approve='yes' where a.policyNo=:pNo "
+						+ "and a.sellRequest.requestId in (select s.requestId from SellRequest s where s.requestId=:rId and s.approve='yes')";
+				Query query = em.createQuery(jpql);
+				query.setParameter("pNo",policyNo);
+				query.setParameter("rId",requestId);
+				int rows = query.executeUpdate();
+				return rows;
+			} catch (Exception e) {
+				return 0;
+			}
 	}
 
 	@Override
@@ -47,8 +51,8 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 			String jpql = "delete from ApplyInsurance a where a.policyNo=:pNo";
 			Query query = em.createQuery(jpql);
 			query.setParameter("pNo",policyNo);
-			query.executeUpdate();
-			return policyNo;
+			int rows = query.executeUpdate();
+			return rows;
 		} catch (Exception e) {
 			return 0;
 		}

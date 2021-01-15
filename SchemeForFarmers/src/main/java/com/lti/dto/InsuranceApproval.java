@@ -10,6 +10,7 @@ public class InsuranceApproval {
 	double totalSumInsured;
 	long requestId;
 	String farmerEmail;
+	long policyNo;
 	public String getInsuranceCompanyName() {
 		return insuranceCompanyName;
 	}
@@ -63,6 +64,12 @@ public class InsuranceApproval {
 	}
 	public void setFarmerEmail(String farmerEmail) {
 		this.farmerEmail = farmerEmail;
+	}
+	public long getPolicyNo() {
+		return policyNo;
+	}
+	public void setPolicyNo(long policyNo) {
+		this.policyNo = policyNo;
 	}
 	
 }
