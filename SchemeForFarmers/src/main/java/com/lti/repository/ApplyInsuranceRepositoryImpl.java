@@ -71,13 +71,17 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 	}
 	@Transactional
 	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss) {
-		String jpql = "update ApplyInsurance a set a.causeOfClaim=:claim,a.dateOfLoss=:date where a.policyNo=:pNo";
-		Query query = em.createQuery(jpql);
-		query.setParameter("pNo",policyNo);
-		query.setParameter("claim",causeOfClaim);
-		query.setParameter("date",dateOfLoss);
-		int rows = query.executeUpdate();
-		return rows;
+		try {
+			String jpql = "update ApplyInsurance a set a.causeOfClaim=:claim,a.dateOfLoss=:date where a.policyNo=:pNo";
+			Query query = em.createQuery(jpql);
+			query.setParameter("pNo",policyNo);
+			query.setParameter("claim",causeOfClaim);
+			query.setParameter("date",dateOfLoss);
+			int rows = query.executeUpdate();
+			return rows;
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	@Transactional
 	public ApplyInsurance fetchInsuranceByPolicyNo(long policyNo) {
