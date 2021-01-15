@@ -288,7 +288,7 @@ public class SchemeController {
 	@RequestMapping(value = "/claimInsurance/{pNo}/{cause}/{date}", method = RequestMethod.GET)
 	public long claimInsurance(@PathVariable("pNo") long policyNo, @PathVariable("cause") String causeOfClaim,
 			@PathVariable("date") String dateOfLoss) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate fDate = LocalDate.parse(dateOfLoss, formatter);
 		return insuranceService.claimInsurance(policyNo, causeOfClaim, fDate);
 	}
