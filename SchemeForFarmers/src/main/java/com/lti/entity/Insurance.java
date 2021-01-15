@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,11 +24,12 @@ public class Insurance {
 	double premiumAmount;
 	double sumInsuredPerHectare;
 	String insuranceCompanyName;
+	
 	@OneToOne
 	@JoinColumn(name="cropId")
 	Crop crop;
 	
-	@OneToMany(mappedBy="insurance",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="insurance",cascade=CascadeType.ALL,fetch = FetchType.EAGER)
 	List<ApplyInsurance> applyInsurance;
 
 	public long getInsuranceId() {
@@ -78,6 +80,4 @@ public class Insurance {
 	public void setApplyInsurance(List<ApplyInsurance> applyInsurance) {
 		this.applyInsurance = applyInsurance;
 	}
-	
-	
 }

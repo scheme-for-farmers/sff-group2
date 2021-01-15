@@ -130,6 +130,7 @@ public class FarmerServiceImpl implements FarmerService {
 	
 	public long uploadDocument(DocumentDto documentDto) {
 		String farmerMail=documentDto.getMail();
+		System.out.println("email: "+documentDto.getMail());
 		Farmer farmer=farmerRepository.fetchFarmerByEmail(farmerMail);
 		String imgUploadLocation = "e:/uploads/";
 		String uploadedFileName = documentDto.getPancard().getOriginalFilename();

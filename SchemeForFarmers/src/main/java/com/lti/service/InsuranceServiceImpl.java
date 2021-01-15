@@ -3,8 +3,12 @@ package com.lti.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.lti.dto.CalculateInsuranceDto;
 import com.lti.dto.InsuranceInputDto;
 import com.lti.entity.ApplyInsurance;
@@ -111,5 +115,15 @@ public class InsuranceServiceImpl implements InsuranceService {
 	}
 	public List<ApplyInsurance> fetchPendingClaimInsurance(){
 		return applyInsuranceRepository.fetchPendingclaimInsurance();
+	}
+
+	@Override
+	public List<Insurance> viewAllInsurance() {
+		return insuranceRepository.viewAllInsurance();
+	}
+
+	@Override
+	public long deleteInsurance(long insuranceId) {
+		return insuranceRepository.deleteInsurance(insuranceId);
 	}
 }

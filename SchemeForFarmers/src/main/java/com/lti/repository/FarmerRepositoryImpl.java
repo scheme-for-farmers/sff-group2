@@ -19,6 +19,7 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 
 	@Transactional
 	public Farmer fetchFarmerByEmail(String farmerEmail) {
+		System.out.println("repooooo");
 		try {
 			String jpql = "select f from Farmer f where farmerEmail=:fEmail";
 			Query query = em.createQuery(jpql);

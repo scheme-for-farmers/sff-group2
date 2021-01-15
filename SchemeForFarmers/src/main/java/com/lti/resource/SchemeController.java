@@ -231,7 +231,8 @@ public class SchemeController {
 
 	@RequestMapping(value = "/uploadFarmerDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
 //	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-	public long uploadFarmerDocument(DocumentDto documentDto) {
+	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto) {
+		System.out.println(documentDto.getMail());
 		return farmerService.uploadDocument(documentDto);
 	}
 
@@ -305,5 +306,15 @@ public class SchemeController {
 	@RequestMapping(value = "/rejectClaimedInsurance/{pNo}", method = RequestMethod.GET)
 	public long rejectClaimInsurance(@PathVariable("pNo") long policyNo) {
 		return adminService.rejectClaimInsurance(policyNo);
+	}
+	
+	@RequestMapping(value = "/viewAllinsurance", method = RequestMethod.GET)
+	public List<Insurance> viewAllInsurance() {
+		return insuranceService.viewAllInsurance();
+	}
+	
+	@RequestMapping(value = "/deleteInsurance/{iId}", method = RequestMethod.GET)
+	public long deleteInsurance(@PathVariable("iId") long insuranceId) {
+		return insuranceService.deleteInsurance(insuranceId);
 	}
 }	
