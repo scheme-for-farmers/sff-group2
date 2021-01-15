@@ -10,6 +10,7 @@ import com.lti.dto.InsuranceApproval;
 import com.lti.dto.InsuranceDto;
 import com.lti.entity.Admin;
 import com.lti.entity.Bidder;
+import com.lti.entity.ContactUs;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
 
@@ -36,4 +37,5 @@ public interface AdminService {
     public long rejectInsuranceApproval(long policyNo);
     public long approveClaimInsurance(long policyNo);
     public long rejectClaimInsurance(long policyNo);
+    public long addContactUs(ContactUs contactUs);
 }

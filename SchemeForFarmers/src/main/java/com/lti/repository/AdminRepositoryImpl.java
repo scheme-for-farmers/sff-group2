@@ -4,10 +4,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.boot.model.source.spi.EmbeddableMapping;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lti.entity.Admin;
+import com.lti.entity.ContactUs;
 
 @Repository
 public class AdminRepositoryImpl implements AdminRepository {
@@ -52,5 +54,14 @@ public class AdminRepositoryImpl implements AdminRepository {
 			return null;
 		}
 	}
-
+	
+	@Transactional
+	public ContactUs addContactUs(ContactUs contactUs) {
+		try {
+			ContactUs contact = em.merge(contactUs);
+			return contact;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

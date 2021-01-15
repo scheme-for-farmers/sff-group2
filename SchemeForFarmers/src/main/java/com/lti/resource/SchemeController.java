@@ -30,6 +30,7 @@ import com.lti.dto.ViewUnsoldCrops;
 import com.lti.entity.Admin;
 import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Bidder;
+import com.lti.entity.ContactUs;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
@@ -316,5 +317,10 @@ public class SchemeController {
 	@RequestMapping(value = "/deleteInsurance/{iId}", method = RequestMethod.GET)
 	public long deleteInsurance(@PathVariable("iId") long insuranceId) {
 		return insuranceService.deleteInsurance(insuranceId);
+	}
+	
+	@RequestMapping(value = "/contactUs", method = RequestMethod.POST)
+	public long addContactUs(@RequestBody ContactUs contact) {
+		return adminService.addContactUs(contact);
 	}
 }	

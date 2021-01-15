@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.lti.entity.ApplyInsurance;
+import com.lti.entity.ContactUs;
 
 public interface ApplyInsuranceRepository {
 	public ApplyInsurance addApplyInsurance(ApplyInsurance applyInsurance);

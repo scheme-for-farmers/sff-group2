@@ -18,6 +18,7 @@ import com.lti.entity.Admin;
 import com.lti.entity.ApplyInsurance;
 import com.lti.entity.Bid;
 import com.lti.entity.Bidder;
+import com.lti.entity.ContactUs;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
@@ -343,5 +344,19 @@ public class AdminServiceImpl implements AdminService {
 			System.out.println("Email sent successfully");
 		}
 		return result;
+	}
+	
+	public long addContactUs(ContactUs contactUs) {
+		ContactUs contact = adminRepository.addContactUs(contactUs);
+		if(contact!=null) {
+			String subject = "Thankyou for contacting us!";
+			System.out.println("email: ");
+			String email = contact.getEmail();
+			String text= "Hi "+contact.getUserName()+"Thankyou for raising your concern! Will reach you soon!"; 
+			emailService.sendEmailForNewRegistration(email, text, subject);
+			System.out.println("Email sent successfully");
+			return contact.getContactId();
+		}
+		return 0;
 	}
 }
