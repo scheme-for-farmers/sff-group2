@@ -102,16 +102,18 @@ public class InsuranceServiceImpl implements InsuranceService {
 	}
 	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss) {
 		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
-		if(applyInsurance!=null && dateOfLoss.compareTo(LocalDate.now())<0 && applyInsurance.getApprove().equalsIgnoreCase("yes")) {
+		if(dateOfLoss.compareTo(LocalDate.now())>0)
+			return 2;  //date invalid
+		if(applyInsurance!=null  && applyInsurance.getApprove().equalsIgnoreCase("yes")) {
 			String subject = "Insurance Claimed Successfully!!";
 			String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
 					"!! Your policyNo is " + applyInsurance.getPolicyNo()+" and waiting for approval";
 			emailService.sendEmailForNewRegistration(email, text, subject);
 			System.out.println("Email sent successfully");
-			return applyInsuranceRepository.claimInsurance(policyNo,causeOfClaim,dateOfLoss);
+			return applyInsuranceRepository.claimInsurance(policyNo,causeOfClaim,dateOfLoss); //1 for valid
 		}
-		return 0;
+		return 0; //policyNo invalid
 	}
 	public List<ApplyInsurance> fetchPendingClaimInsurance(){
 		return applyInsuranceRepository.fetchPendingclaimInsurance();
