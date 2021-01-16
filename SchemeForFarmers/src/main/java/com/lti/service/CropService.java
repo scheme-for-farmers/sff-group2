@@ -9,4 +9,7 @@ public interface CropService {
 	public Crop findCropById(long cropId);
 	public long deleteCrop(long cropId);
 	public List<Crop> viewAllCrops();
+	public List<String> viewAllCropTypes();
+	public List<String> findAllCropNamesByCropType(String cropType);
+
 }

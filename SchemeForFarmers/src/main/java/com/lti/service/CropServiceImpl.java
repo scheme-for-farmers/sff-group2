@@ -25,4 +25,23 @@ public class CropServiceImpl implements CropService {
 	public List<Crop> viewAllCrops(){
 		return cropRepository.viewAllCrops();
 	}
+	@Override
+	public List<String> viewAllCropTypes() {
+	try {
+	return cropRepository.viewAllCropTypes();
+	} catch (Exception e) {
+	return null;
+	}
+
+	 }
+	@Override
+	public List<String> findAllCropNamesByCropType(String cropType) {
+
+	 try {
+	return cropRepository.findAllCropNamesByCropType(cropType);
+	} catch (Exception e) {
+
+	 return null;
+	}
+	}
 }
