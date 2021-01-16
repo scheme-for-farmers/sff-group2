@@ -34,6 +34,7 @@ import com.lti.entity.ContactUs;
 import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
+import com.lti.entity.SellRequest;
 import com.lti.service.AdminService;
 import com.lti.service.BidService;
 import com.lti.service.BidderService;
@@ -322,5 +323,10 @@ public class SchemeController {
 	@RequestMapping(value = "/contactUs", method = RequestMethod.POST)
 	public long addContactUs(@RequestBody ContactUs contact) {
 		return adminService.addContactUs(contact);
+	}
+	@RequestMapping(value="/viewUnsoldCropsByFarmer/{femail}", method=RequestMethod.GET)
+	public List<SellRequest> viewUnsoldCropsOfAFarmer(@PathVariable("femail") String farmerEmail)
+	{
+		return sellRequestService.viewUnsoldCropsOfAFarmer(farmerEmail);
 	}
 }	

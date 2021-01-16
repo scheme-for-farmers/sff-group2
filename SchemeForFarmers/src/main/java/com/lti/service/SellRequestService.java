@@ -9,4 +9,5 @@ import com.lti.entity.SellRequest;
 public interface SellRequestService {
 	public long placeSellRequest(SellRequestDto sellRequestDto);
 	public List<Crop> viewUnsoldCrops();
+	public List<SellRequest> viewUnsoldCropsOfAFarmer(String farmerEmail);
 }

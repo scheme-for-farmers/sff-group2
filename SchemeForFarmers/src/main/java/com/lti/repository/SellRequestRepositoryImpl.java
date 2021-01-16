@@ -105,11 +105,25 @@ public class SellRequestRepositoryImpl implements SellRequestRepository {
 	@Transactional
 	public List<Crop> viewUnsoldCrops(){
 		try {
-			String jpql = "select s.crop from SellRequest s where s.status='unsold' and s.approve='yes'";
+			//String jpql="select c from Crop c where c in (select )"
+			String jpql = "select distinct s.crop from SellRequest s where s.status='unsold' and s.approve='yes'";
 			Query query = em.createQuery(jpql);
 			return query.getResultList();
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	@Transactional
+	public List<SellRequest> viewUnsoldCropsOfAFarmer(String farmerEmail)
+	{
+		try {
+			String jpql="select s from SellRequest s where s.status='unsold' and s.farmer.farmerEmail=:femail";
+			Query query = em.createQuery(jpql);
+			query.setParameter("femail", farmerEmail);
+			return query.getResultList();
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 }

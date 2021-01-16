@@ -15,4 +15,5 @@ public interface SellRequestRepository {
 	public SellRequest addOrUpdateSellRequest(SellRequest sellRequest);
 	public SellRequest fetchSellRequestByRequestIdWithApproveYes(long requestId);
 	public List<Crop> viewUnsoldCrops();
+	public List<SellRequest> viewUnsoldCropsOfAFarmer(String farmerEmail);
 }

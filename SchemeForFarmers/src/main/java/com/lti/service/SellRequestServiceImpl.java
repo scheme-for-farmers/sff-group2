@@ -59,4 +59,8 @@ public class SellRequestServiceImpl implements SellRequestService {
 	public List<Crop> viewUnsoldCrops(){
 		return sellRequestRepository.viewUnsoldCrops();
 	}
+	public List<SellRequest> viewUnsoldCropsOfAFarmer(String farmerEmail)
+	{
+		return sellRequestRepository.viewUnsoldCropsOfAFarmer(farmerEmail);
+	}
 }
