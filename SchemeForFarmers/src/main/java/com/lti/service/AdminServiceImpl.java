@@ -325,11 +325,11 @@ public class AdminServiceImpl implements AdminService {
 		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
 		long result = applyInsuranceRepository.approveclaimInsurance(policyNo);
 		if (result > 0) {
-			String subject = "Insurance Claimed Approved Successfully!!";
+			String subject = "Insurance Claim Approved Successfully!!";
 			String email = applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()
-					+ "!! Your insurance with policy No " + policyNo + " is approved" + "Rs "
-					+ applyInsurance.getTotalsumInsured() + "is credited to your registered bank accoount!";
+					+ "!! Your insurance with policy No " + policyNo + " is approved!" + " Rs "
+					+ applyInsurance.getTotalsumInsured() + " will be credited to your registered bank account within 7 bank working days!";
 			emailService.sendEmailForNewRegistration(email, text, subject);
 			System.out.println("Email sent successfully");
 		}

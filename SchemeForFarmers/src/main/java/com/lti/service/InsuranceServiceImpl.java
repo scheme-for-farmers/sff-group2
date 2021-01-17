@@ -106,7 +106,11 @@ public class InsuranceServiceImpl implements InsuranceService {
 			return 2;  //date invalid
 		if(applyInsurance.getSellRequest().getStatus().equalsIgnoreCase("sold"))
 			return 3;//crop is sold so error
-		if(applyInsurance!=null  && applyInsurance.getApprove().equalsIgnoreCase("yes")) {
+		if(applyInsurance.getCauseOfClaim()!=null && applyInsurance.getDateOfLoss()!=null)
+		{
+			return 4;//already claimed
+		}
+		if(applyInsurance!=null  && applyInsurance.getApprove().equalsIgnoreCase("yes") && applyInsurance.getCauseOfClaim()==null&& applyInsurance.getDateOfLoss()==null) {
 			String subject = "Insurance Claimed Successfully!!";
 			String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
 			String text = "Hi " + applyInsurance.getSellRequest().getFarmer().getFarmerName()+ 
