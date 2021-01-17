@@ -104,6 +104,8 @@ public class InsuranceServiceImpl implements InsuranceService {
 		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
 		if(dateOfLoss.compareTo(LocalDate.now())>0)
 			return 2;  //date invalid
+		if(applyInsurance.getSellRequest().getStatus().equalsIgnoreCase("sold"))
+			return 3;//crop is sold so error
 		if(applyInsurance!=null  && applyInsurance.getApprove().equalsIgnoreCase("yes")) {
 			String subject = "Insurance Claimed Successfully!!";
 			String email =applyInsurance.getSellRequest().getFarmer().getFarmerEmail();
