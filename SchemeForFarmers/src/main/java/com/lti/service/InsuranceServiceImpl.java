@@ -102,6 +102,8 @@ public class InsuranceServiceImpl implements InsuranceService {
 	}
 	public long claimInsurance(long policyNo,String causeOfClaim,LocalDate dateOfLoss) {
 		ApplyInsurance applyInsurance = applyInsuranceRepository.fetchInsuranceByPolicyNo(policyNo);
+		if(applyInsurance==null)
+			return 5;
 		if(dateOfLoss.compareTo(LocalDate.now())>0)
 			return 2;  //date invalid
 		if(applyInsurance.getSellRequest().getStatus().equalsIgnoreCase("sold"))
