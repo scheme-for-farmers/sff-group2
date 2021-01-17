@@ -76,7 +76,7 @@ public class CropRepositoryImpl implements CropRepository {
 	@Transactional
 	public List<String> viewAllCropTypes() {
 	try {
-	String jpql = "select c.CropType from Crop c";
+	String jpql = "select distinct c.CropType from Crop c";
 	Query query = em.createQuery(jpql);
 
 
@@ -90,17 +90,19 @@ public class CropRepositoryImpl implements CropRepository {
 	@Override
 	@Transactional
 	public List<String> findAllCropNamesByCropType(String cropType) {
-	try {
-	String jpql = "select c.CropName from Crop c where c.CropType=:cType";
-	Query query = em.createQuery(jpql);
-
-	 query.setParameter("cType", cropType);
-	return query.getResultList();
-	}
-	catch (Exception e) {
-	return null;
-	}
-
+		try {
+			String jpql = "select c.CropName from Crop c where c.CropType=:cType and c not in (select i.crop from Insurance i)";
+			Query query = em.createQuery(jpql);
+			query.setParameter("cType", cropType);
+			if (query.getResultList() == null) {
+				return null;
+			} else {
+				return query.getResultList();
+			}
+		} catch (Exception e) {
+			System.out.println("null");
+			return null;
+		}
 
 	}
 	

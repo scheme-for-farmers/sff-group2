@@ -36,12 +36,11 @@ public class CropServiceImpl implements CropService {
 	 }
 	@Override
 	public List<String> findAllCropNamesByCropType(String cropType) {
+		try {
+			return cropRepository.findAllCropNamesByCropType(cropType);
+		} catch (Exception e) {
 
-	 try {
-	return cropRepository.findAllCropNamesByCropType(cropType);
-	} catch (Exception e) {
-
-	 return null;
-	}
+			return null;
+		}
 	}
 }

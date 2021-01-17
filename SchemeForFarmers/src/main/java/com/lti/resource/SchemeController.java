@@ -329,12 +329,14 @@ public class SchemeController {
 	{
 		return sellRequestService.viewUnsoldCropsOfAFarmer(farmerEmail);
 	}
+
 	@RequestMapping(value = "/viewAllCropType", method = RequestMethod.GET)
 	public List<String> viewAllCropType() {
-	return cropService.viewAllCropTypes();
+		return cropService.viewAllCropTypes();
 	}
+
 	@RequestMapping(value = "/viewAllCropNameByCropType/{cropType}", method = RequestMethod.GET)
-	public List<String> viewAllCropNameByCropType(@PathVariable("cropType") String cropType ) {
-	return cropService.findAllCropNamesByCropType(cropType);
+	public List<String> viewAllCropNameByCropType(@PathVariable("cropType") String cropType) {
+		return cropService.findAllCropNamesByCropType(cropType);
 	}
 }	
