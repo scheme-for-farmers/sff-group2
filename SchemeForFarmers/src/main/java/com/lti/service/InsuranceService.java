@@ -15,4 +15,5 @@ public interface InsuranceService {
 	public List<ApplyInsurance> fetchPendingClaimInsurance();
 	public List<Insurance> viewAllInsurance();
 	public long deleteInsurance(long insuranceId);
+	public long updateInsurance(Insurance insurance);
 }

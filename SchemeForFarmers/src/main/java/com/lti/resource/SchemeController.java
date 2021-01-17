@@ -339,4 +339,9 @@ public class SchemeController {
 	public List<String> viewAllCropNameByCropType(@PathVariable("cropType") String cropType) {
 		return cropService.findAllCropNamesByCropType(cropType);
 	}
+	@RequestMapping(value="/updateInsurance",method=RequestMethod.POST)
+	public long updateInsurance(@RequestBody Insurance insurance)
+	{
+		return insuranceService.updateInsurance(insurance);
+	}
 }	

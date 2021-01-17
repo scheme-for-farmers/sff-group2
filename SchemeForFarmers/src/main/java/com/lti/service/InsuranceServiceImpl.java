@@ -128,4 +128,9 @@ public class InsuranceServiceImpl implements InsuranceService {
 	public long deleteInsurance(long insuranceId) {
 		return insuranceRepository.deleteInsurance(insuranceId);
 	}
+	
+	public long updateInsurance(Insurance insurance)
+	{
+		return insuranceRepository.addOrUpdateInsurance(insurance).getInsuranceId();
+	}
 }
