@@ -197,7 +197,7 @@ public class SchemeController {
 		return bidService.placeBid(displayRequestDto);
 	}
 
-	@RequestMapping(value = "/displayBids", method = RequestMethod.GET)
+	@RequestMapping(value = "/displayBids", method = RequestMethod.GET) //mark crop as sold
 	public List<DisplayBidDto> viewAllBids() {
 		return adminService.viewBid();
 	}

@@ -123,7 +123,7 @@ public class ApplyInsuranceRepositoryImpl implements ApplyInsuranceRepository {
 	@Transactional
 	public long rejectclaimInsurance(long policyNo) {
 		try {
-			String jpql = "delete from ApplyInsurance a where a.policyNo=:pNo";
+			String jpql = "update ApplyInsurance a set a.causeOfClaim=null,a.dateOfLoss=null where a.policyNo=:pNo";
 			Query query = em.createQuery(jpql);
 			query.setParameter("pNo",policyNo);
 			int rows = query.executeUpdate();

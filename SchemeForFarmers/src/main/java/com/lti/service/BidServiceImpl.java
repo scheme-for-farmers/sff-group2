@@ -47,6 +47,7 @@ public class BidServiceImpl implements BidService {
         List<SellRequest> sellRequests = sellRequestRepository.fetchApprovedSellRequest();
         List<DisplayRequestDto> appSellReqDto = new ArrayList<DisplayRequestDto>();
         for (SellRequest s : sellRequests) {
+        	if(s.getApplyInsurance().getCauseOfClaim()==null && s.getApplyInsurance().getDateOfLoss()==null) {
             DisplayRequestDto approval = new DisplayRequestDto();
             double basePrice = s.getCrop().getBasePrice();
             double currentBidAmount = bidRepository.findMaximumBidAmountByRequestId(s.getCrop().getCropId(),s.getRequestId());
@@ -60,6 +61,7 @@ public class BidServiceImpl implements BidService {
             approval.setQuantity(s.getQuantity());
             approval.setRequestId(s.getRequestId());
             appSellReqDto.add(approval);
+        }
         }
         return appSellReqDto;
     }
