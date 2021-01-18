@@ -3,21 +3,22 @@ package com.lti.dto;
 import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentDto {
-	String mail;
-	MultipartFile pancard;
+	long id;
+	//MultipartFile pancard;
 	MultipartFile aadharCard;
-	public String getMail() {
-		return mail;
+	
+	public long getId() {
+		return id;
 	}
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setId(long id) {
+		this.id = id;
 	}
-	public MultipartFile getPancard() {
-		return pancard;
-	}
-	public void setPancard(MultipartFile pancard) {
-		this.pancard = pancard;
-	}
+	//	public MultipartFile getPancard() {
+//		return pancard;
+//	}
+//	public void setPancard(MultipartFile pancard) {
+//		this.pancard = pancard;
+//	}
 	public MultipartFile getAadharCard() {
 		return aadharCard;
 	}

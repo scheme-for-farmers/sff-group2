@@ -77,25 +77,25 @@ public class BidderServiceImpl implements BidderService {
 		else
 			return null;
 	}
-	public long uploadDocument(DocumentDto documentDto) {
-		String bidderMail=documentDto.getMail();
-		Bidder bidder=bidderRepository.fetchBidderByEmail(bidderMail);
-		String imgUploadLocation = "e:/uploads/";
-		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
-		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
-		String newaadharFileName = bidder.getBidderId()+"-"+aadharFileName;
-		String newFileName = bidder.getBidderId() + "-" + uploadedFileName;
-		String targetFileName = imgUploadLocation + newFileName;
-		String targetAadharFileName = imgUploadLocation+newaadharFileName;
-
-		try {
-			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
-			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetAadharFileName));
-			bidder.setBidderAadhar(newaadharFileName);
-			bidder.setBidderPan(newFileName);
-			return bidderRepository.addOrUpdateBidder(bidder).getBidderId();
-		} catch(IOException e) {
-			return 0;
-		}
-	}	
+//	public long uploadDocument(DocumentDto documentDto) {
+//		String bidderMail=documentDto.getMail();
+//		Bidder bidder=bidderRepository.fetchBidderByEmail(bidderMail);
+//		String imgUploadLocation = "e:/uploads/";
+//		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
+//		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
+//		String newaadharFileName = bidder.getBidderId()+"-"+aadharFileName;
+//		String newFileName = bidder.getBidderId() + "-" + uploadedFileName;
+//		String targetFileName = imgUploadLocation + newFileName;
+//		String targetAadharFileName = imgUploadLocation+newaadharFileName;
+//
+//		try {
+//			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
+//			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetAadharFileName));
+//			bidder.setBidderAadhar(newaadharFileName);
+//			bidder.setBidderPan(newFileName);
+//			return bidderRepository.addOrUpdateBidder(bidder).getBidderId();
+//		} catch(IOException e) {
+//			return 0;
+//		}
+//	}	
 }

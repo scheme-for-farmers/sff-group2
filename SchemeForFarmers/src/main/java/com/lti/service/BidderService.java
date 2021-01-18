@@ -8,5 +8,5 @@ public interface BidderService {
 	public String isValidUser(String bidderEmail,String bidderPassword);
 	public String forgotPassword(String bidderEmail);
 	public boolean checkDuplicate(String bidderEmail);
-	public long uploadDocument(DocumentDto documentDto);
+	//public long uploadDocument(DocumentDto documentDto);
 }

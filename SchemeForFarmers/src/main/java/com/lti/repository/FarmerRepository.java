@@ -12,6 +12,7 @@ public interface FarmerRepository {
 	public Farmer updateFarmerByEmail(String farmerEmail);
 	public Farmer fetchFarmerByEmailWithApproveYes(String farmerEmail);
 	public long rejectFarmer(String farmerEmail);
+	public Farmer fetchFarmerById(long id);
 	//public Farmer findFarmerByFarmerId(long farmer)
 
 }

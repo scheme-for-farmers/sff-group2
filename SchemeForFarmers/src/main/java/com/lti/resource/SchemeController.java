@@ -231,18 +231,18 @@ public class SchemeController {
 		}
 	}
 
-	@RequestMapping(value = "/uploadFarmerDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
-//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+	@PostMapping("/uploadFarmerDoc")
 	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto) {
-		System.out.println(documentDto.getMail());
+		System.out.println(documentDto.getId());
+		System.out.println("II"+documentDto.getAadharCard().getOriginalFilename());
 		return farmerService.uploadDocument(documentDto);
 	}
 
-	@RequestMapping(value = "/uploadBidderDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
-//	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto) {
-		return bidderService.uploadDocument(documentDto);
-	}
+//	@RequestMapping(value = "/uploadBidderDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
+////	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+//	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto) {
+//		return bidderService.uploadDocument(documentDto);
+//	}
 
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long addAdmin(@RequestBody Admin admin) {

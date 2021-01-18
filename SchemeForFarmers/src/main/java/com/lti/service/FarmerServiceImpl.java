@@ -129,22 +129,24 @@ public class FarmerServiceImpl implements FarmerService {
 	}
 	
 	public long uploadDocument(DocumentDto documentDto) {
-		String farmerMail=documentDto.getMail();
-		System.out.println("email: "+documentDto.getMail());
-		Farmer farmer=farmerRepository.fetchFarmerByEmail(farmerMail);
+		long id=documentDto.getId();
+		System.out.println("email: "+documentDto.getId());
+		Farmer farmer=farmerRepository.fetchFarmerById(id);
+		System.out.println(farmer.getFarmerEmail());
 		String imgUploadLocation = "e:/uploads/";
-		String uploadedFileName = documentDto.getPancard().getOriginalFilename();
+		//String uploadedFileName = documentDto.getPancard().getOriginalFilename();
 		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
+		System.out.println(aadharFileName);
 		String newaadharFileName = farmer.getFarmerId()+"-"+aadharFileName;
 		
-		String newFileName = farmer.getFarmerId() + "-" + uploadedFileName;
-		String targetFileName = imgUploadLocation + newFileName;
+		//String newFileName = farmer.getFarmerId() + "-" + uploadedFileName;
+		//String targetFileName = imgUploadLocation + newFileName;
 		String targetAadharFileName = imgUploadLocation+newaadharFileName;
 		try {
-			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
-			FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetAadharFileName));
+			//FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
+			FileCopyUtils.copy(documentDto.getAadharCard().getInputStream(), new FileOutputStream(targetAadharFileName));
 			farmer.setFarmerAadhar(newaadharFileName);
-			farmer.setFarmerPan(newFileName);
+			//farmer.setFarmerPan(newFileName);
 			return farmerRepository.addOrUpdateFarmer(farmer).getFarmerId();
 		} catch(IOException e) {
 			return 0;

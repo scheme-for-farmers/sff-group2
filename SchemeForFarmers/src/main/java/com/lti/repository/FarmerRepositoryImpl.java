@@ -31,6 +31,23 @@ public class FarmerRepositoryImpl implements FarmerRepository {
 			return null;
 		}
 	}
+	
+	@Transactional
+	public Farmer fetchFarmerById(long id) {
+		System.out.println("repooooo");
+		//try {
+			System.out.println("hi");
+			String jpql = "select f from Farmer f where farmerId=:fId";
+			Query query = em.createQuery(jpql);
+			query.setParameter("fId", id);
+			Farmer farmers = (Farmer) query.getSingleResult();
+			return farmers;
+//		} catch (Exception e) {
+//			System.out.println("hiiii");
+//			return null;
+//		}
+	}
+	
 	@Transactional
 	public Farmer fetchFarmerByEmailWithApproveYes(String farmerEmail) {
 		try {
