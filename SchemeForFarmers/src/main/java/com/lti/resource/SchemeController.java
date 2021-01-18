@@ -1,10 +1,16 @@
 package com.lti.resource;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.lti.dto.ApprovalBidDto;
 import com.lti.dto.ApprovalSellRequestDto;
@@ -35,6 +42,8 @@ import com.lti.entity.Crop;
 import com.lti.entity.Farmer;
 import com.lti.entity.Insurance;
 import com.lti.entity.SellRequest;
+import com.lti.repository.BidderRepository;
+import com.lti.repository.FarmerRepository;
 import com.lti.service.AdminService;
 import com.lti.service.BidService;
 import com.lti.service.BidderService;
@@ -61,6 +70,10 @@ public class SchemeController {
 	SellRequestService sellRequestService;
 	@Autowired
 	InsuranceService insuranceService;
+	@Autowired
+	FarmerRepository farmerRepo;
+	@Autowired
+	BidderRepository bidderRepo;
 
 	@RequestMapping(value = "/placeSellRequest", method = RequestMethod.POST)
 	public long placeSellRequest(@RequestBody SellRequestDto sellRequestDto) {
@@ -238,11 +251,10 @@ public class SchemeController {
 		return farmerService.uploadDocument(documentDto);
 	}
 
-//	@RequestMapping(value = "/uploadBidderDoc", method = RequestMethod.POST, consumes = { "multipart/form-data" })
-////	consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-//	public long uploadBidderDocument(@ModelAttribute DocumentDto documentDto) {
-//		return bidderService.uploadDocument(documentDto);
-//	}
+	@PostMapping("/uploadBidderDoc")
+	public long uploadBidderDocument(DocumentDto documentDto) {
+		return bidderService.uploadDocument(documentDto);
+	}
 
 	@RequestMapping(value = "/addAdmin", method = RequestMethod.POST) // http://localhost:8080/sff/registerUser
 	public long addAdmin(@RequestBody Admin admin) {
@@ -344,4 +356,71 @@ public class SchemeController {
 	{
 		return insuranceService.updateInsurance(insurance);
 	}
+	@RequestMapping(value="/check/{farmerId}",method=RequestMethod.GET)
+	public Farmer updateInsurance(@PathVariable long farmerId)
+	{
+	return farmerRepo.fetchFarmerById(farmerId);
+	}
+	@GetMapping("/viewDocFarmer")
+	public Farmer profile(@RequestParam long userId, HttpServletRequest request) {
+	Farmer user = farmerRepo.fetchFarmerById(userId);
+	String projPath = request.getServletContext().getRealPath("/");
+	System.out.println(projPath);
+	String aadharTempDownloadPath = projPath + "/aadharCard/";
+	String panTempDownloadPath = projPath + "/panCard/";
+	//creating this downloads folder in case if it doesn't exist
+	File fa = new File(aadharTempDownloadPath);
+	File fp = new File(panTempDownloadPath);
+	if(!fa.exists() && !fp.exists()) {
+	fa.mkdir();
+	fp.mkdir();
+	}
+	//the target location where we will save the profile pic of the customer
+	String aadharTargetFile = aadharTempDownloadPath +user.getFarmerAadhar();
+	String panTargetFile = panTempDownloadPath + user.getFarmerPan();
+	//reading the original location where the image is present
+	String aadharUploadedImagesPath = "d:/aadharUploads/";
+	String panUploadedImagesPath = "d:/panUploads/";
+	String aadharSourceFile = aadharUploadedImagesPath + user.getFarmerAadhar();
+	String panSourceFile = panUploadedImagesPath + user.getFarmerPan();
+	try {
+	FileCopyUtils.copy(new File(aadharSourceFile), new File(aadharTargetFile));
+	FileCopyUtils.copy(new File(panSourceFile), new File(panTargetFile));
+	} catch(IOException e) {
+	e.printStackTrace(); //hoping for no error will occur
+	}
+	return user;
+	}
+	
+	@GetMapping("/viewDocBidder")
+	public Bidder bidderProfile(@RequestParam long userId, HttpServletRequest request) {
+	Bidder user = bidderRepo.fetchBidderById(userId);
+	String projPath = request.getServletContext().getRealPath("/");
+	System.out.println(projPath);
+	String aadharTempDownloadPath = projPath + "/aadharCard/";
+	String panTempDownloadPath = projPath + "/panCard/";
+	//creating this downloads folder in case if it doesn't exist
+	File fa = new File(aadharTempDownloadPath);
+	File fp = new File(panTempDownloadPath);
+	if(!fa.exists() && !fp.exists()) {
+	fa.mkdir();
+	fp.mkdir();
+	}
+	//the target location where we will save the profile pic of the customer
+	String aadharTargetFile = aadharTempDownloadPath +user.getBidderAadhar();
+	String panTargetFile = panTempDownloadPath + user.getBidderPan();
+	//reading the original location where the image is present
+	String aadharUploadedImagesPath = "d:/bidderAadhar/";
+	String panUploadedImagesPath = "d:/bidderPan/";
+	String aadharSourceFile = aadharUploadedImagesPath + user.getBidderAadhar();
+	String panSourceFile = panUploadedImagesPath + user.getBidderPan();
+	try {
+	FileCopyUtils.copy(new File(aadharSourceFile), new File(aadharTargetFile));
+	FileCopyUtils.copy(new File(panSourceFile), new File(panTargetFile));
+	} catch(IOException e) {
+	e.printStackTrace(); //hoping for no error will occur
+	}
+	return user;
+	}
+	
 }	

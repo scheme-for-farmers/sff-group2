@@ -52,6 +52,22 @@ public class BidderRepositoryImpl implements BidderRepository {
 	}
 	
 	@Transactional
+	public Bidder fetchBidderById(long id) {
+		try {
+			String jpql = "select b from Bidder b where b.bidderId=:bId";
+			Query query = em.createQuery(jpql);
+			query.setParameter("bId", id);
+			Bidder bidders = (Bidder) query.getSingleResult();
+			System.out.println("repo: "+bidders.getBidderEmail());
+			return bidders;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
+	
+	@Transactional
 	public Bidder fetchBidderByEmailWithApproveYes(String bidderEmail) {
 		try {
 			String jpql = "select b from Bidder b where bidderEmail=:bEmail and bidderApprove='yes'";

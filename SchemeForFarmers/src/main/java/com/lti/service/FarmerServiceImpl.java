@@ -130,26 +130,28 @@ public class FarmerServiceImpl implements FarmerService {
 	
 	public long uploadDocument(DocumentDto documentDto) {
 		long id=documentDto.getId();
-		System.out.println("email: "+documentDto.getId());
-		Farmer farmer=farmerRepository.fetchFarmerById(id);
-		System.out.println(farmer.getFarmerEmail());
-		String imgUploadLocation = "e:/uploads/";
-		//String uploadedFileName = documentDto.getPancard().getOriginalFilename();
-		String aadharFileName = documentDto.getAadharCard().getOriginalFilename();
-		System.out.println(aadharFileName);
-		String newaadharFileName = farmer.getFarmerId()+"-"+aadharFileName;
-		
-		//String newFileName = farmer.getFarmerId() + "-" + uploadedFileName;
-		//String targetFileName = imgUploadLocation + newFileName;
-		String targetAadharFileName = imgUploadLocation+newaadharFileName;
+		String aadharCardUploadLocation = "d:/aadharUploads/";
+		String panCardUploadLocation = "d:/panUploads/";
+		String uploadedPanFileName= documentDto.getPancard().getOriginalFilename();
+		String uploadedAadharFileName = documentDto.getAadharCard().getOriginalFilename();
+		String newAadharFileName = id + "-" + uploadedAadharFileName;
+		String newPanFileName = id + "-" + uploadedPanFileName;
+		String targetAadharFileName = aadharCardUploadLocation + newAadharFileName;
+		String targetPanFileName = panCardUploadLocation + newPanFileName;
 		try {
-			//FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetFileName));
-			FileCopyUtils.copy(documentDto.getAadharCard().getInputStream(), new FileOutputStream(targetAadharFileName));
-			farmer.setFarmerAadhar(newaadharFileName);
-			//farmer.setFarmerPan(newFileName);
-			return farmerRepository.addOrUpdateFarmer(farmer).getFarmerId();
+		FileCopyUtils.copy(documentDto.getAadharCard().getInputStream(), new FileOutputStream(targetAadharFileName));
+		FileCopyUtils.copy(documentDto.getPancard().getInputStream(), new FileOutputStream(targetPanFileName));
 		} catch(IOException e) {
-			return 0;
+		e.printStackTrace(); //hoping no error would occur
+		return 404;
 		}
-	}	
+		Farmer farmer=farmerRepository.fetchFarmerById(id);
+		farmer.setFarmerAadhar(newAadharFileName);
+		farmer.setFarmerPan(newPanFileName);
+		// userAndAdminService.uploadDocs(userId, newAadharFileName,newPanFileName);
+		// Status status = new Status();
+		// status.setStatus(StatusType.SUCCESS);
+		// status.setMessage("Doccuments Uploaded");
+		return farmerRepository.addOrUpdateFarmer(farmer).getFarmerId();
+}
 }

@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentDto {
 	long id;
-	//MultipartFile pancard;
+	MultipartFile pancard;
 	MultipartFile aadharCard;
 	
 	public long getId() {
@@ -13,12 +13,12 @@ public class DocumentDto {
 	public void setId(long id) {
 		this.id = id;
 	}
-	//	public MultipartFile getPancard() {
-//		return pancard;
-//	}
-//	public void setPancard(MultipartFile pancard) {
-//		this.pancard = pancard;
-//	}
+		public MultipartFile getPancard() {
+		return pancard;
+	}
+	public void setPancard(MultipartFile pancard) {
+		this.pancard = pancard;
+	}
 	public MultipartFile getAadharCard() {
 		return aadharCard;
 	}

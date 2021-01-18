@@ -121,16 +121,34 @@ public class AdminServiceImpl implements AdminService {
 			List<DisplayBidDto> displayBidDto = new ArrayList<DisplayBidDto>();
 			for (Bid b : bids) {
 				SellRequest s = sellRequestRepository.fetchSellRequestByRequestId(b.getRequestId());
-				DisplayBidDto disDto = new DisplayBidDto();
-				disDto.setBidAmount(b.getBidAmount());
-				disDto.setBidDate(b.getBidDate());
-				disDto.setBidderEmail(b.getBidder().getBidderEmail());
-				disDto.setCropName(b.getCrop().getCropName());
-				disDto.setCropType(b.getCrop().getCropType());
-				disDto.setBidId(b.getBidId());
-				disDto.setFarmerEmail(s.getFarmer().getFarmerEmail());
-				disDto.setRequestId(b.getRequestId());
-				displayBidDto.add(disDto);
+				if(s.getApplyInsurance()!=null)
+				{
+					if(s.getApplyInsurance().getDateOfLoss()==null && s.getApplyInsurance().getCauseOfClaim()==null)
+					{
+						DisplayBidDto disDto = new DisplayBidDto();
+						disDto.setBidAmount(b.getBidAmount());
+						disDto.setBidDate(b.getBidDate());
+						disDto.setBidderEmail(b.getBidder().getBidderEmail());
+						disDto.setCropName(b.getCrop().getCropName());
+						disDto.setCropType(b.getCrop().getCropType());
+						disDto.setBidId(b.getBidId());
+						disDto.setFarmerEmail(s.getFarmer().getFarmerEmail());
+						disDto.setRequestId(b.getRequestId());
+						displayBidDto.add(disDto);
+					}
+				}
+				else {
+					DisplayBidDto disDto = new DisplayBidDto();
+					disDto.setBidAmount(b.getBidAmount());
+					disDto.setBidDate(b.getBidDate());
+					disDto.setBidderEmail(b.getBidder().getBidderEmail());
+					disDto.setCropName(b.getCrop().getCropName());
+					disDto.setCropType(b.getCrop().getCropType());
+					disDto.setBidId(b.getBidId());
+					disDto.setFarmerEmail(s.getFarmer().getFarmerEmail());
+					disDto.setRequestId(b.getRequestId());
+					displayBidDto.add(disDto);
+				}
 			}
 			return displayBidDto;
 		} catch (Exception e) {
