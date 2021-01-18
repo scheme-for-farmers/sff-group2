@@ -47,7 +47,25 @@ public class BidServiceImpl implements BidService {
         List<SellRequest> sellRequests = sellRequestRepository.fetchApprovedSellRequest();
         List<DisplayRequestDto> appSellReqDto = new ArrayList<DisplayRequestDto>();
         for (SellRequest s : sellRequests) {
-        	if(s.getApplyInsurance().getCauseOfClaim()==null && s.getApplyInsurance().getDateOfLoss()==null) {
+        	if(s.getApplyInsurance()!=null)
+        	{
+        		if(s.getApplyInsurance().getCauseOfClaim()==null && s.getApplyInsurance().getDateOfLoss()==null) {
+                    DisplayRequestDto approval = new DisplayRequestDto();
+                    double basePrice = s.getCrop().getBasePrice();
+                    double currentBidAmount = bidRepository.findMaximumBidAmountByRequestId(s.getCrop().getCropId(),s.getRequestId());
+                    if (currentBidAmount > basePrice) {
+                        approval.setCurrentBidAmount(currentBidAmount);
+                    } else
+                        approval.setCurrentBidAmount(basePrice);
+                    approval.setCropName(s.getCrop().getCropName());
+                    approval.setCropType(s.getCrop().getCropType());
+                    approval.setFarmerEmail(s.getFarmer().getFarmerEmail());
+                    approval.setQuantity(s.getQuantity());
+                    approval.setRequestId(s.getRequestId());
+                    appSellReqDto.add(approval);
+                }
+        	}
+        	else {
             DisplayRequestDto approval = new DisplayRequestDto();
             double basePrice = s.getCrop().getBasePrice();
             double currentBidAmount = bidRepository.findMaximumBidAmountByRequestId(s.getCrop().getCropId(),s.getRequestId());
