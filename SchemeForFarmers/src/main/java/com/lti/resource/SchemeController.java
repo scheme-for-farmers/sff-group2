@@ -232,7 +232,7 @@ public class SchemeController {
 	}
 
 	@PostMapping("/uploadFarmerDoc")
-	public long uploadFarmerDocument(@ModelAttribute DocumentDto documentDto) {
+	public long uploadFarmerDocument(DocumentDto documentDto) {
 		System.out.println(documentDto.getId());
 		System.out.println("II"+documentDto.getAadharCard().getOriginalFilename());
 		return farmerService.uploadDocument(documentDto);
