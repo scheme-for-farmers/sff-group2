@@ -53,16 +53,16 @@ public class InsuranceServiceImpl implements InsuranceService {
 			calulateInsurance.setCropType(crop.getCropType());
 			calulateInsurance.setSumInsured(insurance.getSumInsuredPerHectare());
 			if (crop.getCropType().equalsIgnoreCase("kharif")) {
-				premiumAmount = insurance.getSumInsuredPerHectare() * 0.02 * inputDto.getArea();
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.02 * inputDto.getArea()*sellRequest.getQuantity(); //2 percent
 				calulateInsurance.setPremiumAmount(premiumAmount);
 			} else if (crop.getCropType().equalsIgnoreCase("rabi")) {
-				premiumAmount = insurance.getSumInsuredPerHectare() * 0.15 * inputDto.getArea();
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.15 * inputDto.getArea()*sellRequest.getQuantity(); //1.5 percent
 				calulateInsurance.setPremiumAmount(premiumAmount);
 			} else {
-				premiumAmount = insurance.getSumInsuredPerHectare() * 0.05 * inputDto.getArea();
+				premiumAmount = insurance.getSumInsuredPerHectare() * 0.05 * inputDto.getArea()*sellRequest.getQuantity() ;//5 percent
 				calulateInsurance.setPremiumAmount(premiumAmount);
 			}
-			calulateInsurance.setTotalSumInsured(inputDto.getArea() * insurance.getSumInsuredPerHectare());
+			calulateInsurance.setTotalSumInsured(inputDto.getArea() * insurance.getSumInsuredPerHectare()* sellRequest.getQuantity());
 			return calulateInsurance;
 		} catch (Exception e) {
 			return null;
